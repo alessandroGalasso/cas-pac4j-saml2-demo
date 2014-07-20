@@ -1,4 +1,4 @@
-cas-pac4j-saml2-demo
+<h2>cas-pac4j-saml2-demo</h2>
 
 ========
 
