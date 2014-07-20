@@ -1,7 +1,7 @@
 security
 ========
 
-<h2>security demo webApp "cas-pac4j-spring-security-saml-demo"</h2>
+<h2>security demo; cas + pac4j + saml2 logout</h2>
 
 
 This is an overlayed version of cas-server-webapp.
