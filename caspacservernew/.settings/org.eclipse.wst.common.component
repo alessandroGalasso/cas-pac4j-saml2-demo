@@ -10,7 +10,7 @@
         <dependent-module deploy-path="/" handle="module:/overlay/slf/?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
             <dependency-type>consumes</dependency-type>
         </dependent-module>
-        <property name="java-output-path" value="/casserverPac4jSaml/target/classes"/>
         <property name="context-root" value="caspac"/>
+        <property name="java-output-path" value="/casserverPac4jSaml/target/classes"/>
     </wb-module>
 </project-modules>
