@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="casserverPac4jSaml">
+    <wb-module deploy-name="cas-pac4j-saml2-client-demo">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
@@ -11,6 +11,6 @@
             <dependency-type>consumes</dependency-type>
         </dependent-module>
         <property name="context-root" value="caspac"/>
-        <property name="java-output-path" value="/casserverPac4jSaml/target/classes"/>
+        <property name="java-output-path" value="/cas-pac4j-saml2-client-demo/target/classes"/>
     </wb-module>
 </project-modules>
