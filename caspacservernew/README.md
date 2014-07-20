@@ -28,7 +28,7 @@ note:
 
 - saml assertion must be stored as atttribute in the TGT to allow logout from cas to loggedIn idp
 - logout-webflow.xml modified to map cas client logout to idp by ClientLogoutAction
-- spring-security-saml / securityContext.xml imported without http config, only the beans are uset to use saml
+- spring-security-saml / securityContext.xml imported without http config, only the beans are used to do assertions
 - new RedirectType = DUMMY   to delegate all the work to wrapped libs
 - modified BaseSAMLMessageDecoder to allow params
 
