@@ -1,8 +1,6 @@
-security
+cas-pac4j-saml2-demo
+
 ========
-
-<h2>security demo webApp "cas-pac4j-spring-security-saml-demo"</h2>
-
 
 This is an overlayed version of cas-server-webapp.
 
