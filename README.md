@@ -49,8 +49,8 @@ flow Example
 - LOGIN
 - https://app.alessandro.it:2443/cas-client-webapp/	HTTPS	GET	200
 - https://app.alessandro.it:2443/cas-client-webapp/p	HTTPS	GET	302
--/caspac/login?service=https%3A%2F%2Fapp.alessandro.it%3A2443%2Fcas-client-webapp%2Fj_spring_cas_security_check	HTTPS	GET	200
--/caspac/login?client_name=Saml2ClientWrapper&needs_client_redirection=true&idp=https://idp.alessandro.it/idp/shibboleth	HTTPS	GET	200
+- /caspac/login?service=https%3A%2F%2Fapp.alessandro.it%3A2443%2Fcas-client-webapp%2Fj_spring_cas_security_check	HTTPS	GET	200
+- /caspac/login?client_name=Saml2ClientWrapper&needs_client_redirection=true&idp=https://idp.alessandro.it/idp/shibboleth	HTTPS	GET	200
 - https://idp.alessandro.it/idp/profile/SAML2/POST/SSO	HTTPS	POST	302
 - https://idp.alessandro.it/idp/AuthnEngine	HTTPS	POST	302
 - https://idp.alessandro.it/idp/Authn/UserPassword	HTTPS	POST	200
