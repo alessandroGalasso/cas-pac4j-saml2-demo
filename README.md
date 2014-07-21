@@ -56,13 +56,13 @@ flow Example
 - https://idp.alessandro.it/idp/Authn/UserPassword	HTTPS	POST	200
 - https://idp.alessandro.it/idp/Authn/UserPassword	HTTPS	POST	302
 - https://idp.alessandro.it/idp/profile/SAML2/POST/SSO	HTTPS	POST	200
-- /caspac/login?client_name=Saml2ClientWrapper	HTTPS	POST	302
+- caspac/login?client_name=Saml2ClientWrapper	HTTPS	POST	302
 - https://app.alessandro.it:2443/cas-client-webapp/j_spring_cas_security_check?ticket=ST-5-AWJ...	HTTPS	POST	302
 - https://app.alessandro.it:2443/cas-client-webapp/p	HTTPS	POST	200
  
 - LOGOUT
 - https://app.alessandro.it:2443/cas-client-webapp/j_spring_cas_security_logout	HTTPS	GET	302	0	-609164170
-- /caspac/logout	HTTPS	GET	302
+- caspac/logout	HTTPS	GET	302
 - https://idp.alessandro.it/idp/profile/SAML2/Redirect/SLO?SAMLRequest=nZJBb%2BM.......	HTTPS	GET	200
 - https://cas.alessandro.it:6443/caspac/logout?action=SingleLogout	HTTPS	POST	200
  
