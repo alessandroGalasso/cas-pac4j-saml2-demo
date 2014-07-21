@@ -212,8 +212,8 @@ public abstract class BaseSAMLMessageDecoder extends BaseMessageDecoder implemen
       
         //boolean matched = compareEndpointURIs(messageDestination, receiverEndpoint);
         
-        boolean matched = compareEndpointURIs(messageDestination.replace("?client_name=Saml2ClientWrapper", ""),
-        		receiverEndpoint.replace("?client_name=Saml2ClientWrapper", ""));
+        boolean matched = compareEndpointURIs(messageDestination.replace("?client_name=Saml2ClientWrapper", "").replace("?action=SingleLogout",""),
+        		receiverEndpoint.replace("?client_name=Saml2ClientWrapper", "").replace("?action=SingleLogout",""));
         
         
         

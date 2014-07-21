@@ -53,6 +53,9 @@
 <br />
 -->
   
+   <br />
+ -> <a href="https://cas.alessandro.it:6443/caspac/saml/web/metadata/generate">generate sp metadata</a>
+   <br />
  <c:forEach var="idpItem" items="${idp}">
  <br />->   <a href="${Saml2ClientWrapperUrl}&amp;idp=${idpItem}"><b>Authenticate with a SAML provider</a></b><br />                  
    </c:forEach>

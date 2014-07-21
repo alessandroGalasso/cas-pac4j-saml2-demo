@@ -54,7 +54,17 @@
     	<constructor-arg index="5"><null /></constructor-arg>
     	<constructor-arg index="6" ref="servicesManager"/>
   	</bean>
-	<!-- #DEMO# -->     
+  	
+  	<bean id="logoutProcessingAction" class="org.jasig.cas.support.pac4j.web.flow.LogoutProcessingAction">
+    	<constructor-arg index="0" ref="centralAuthenticationService"/>
+    	<constructor-arg index="1" ref="clients"/>
+    	<constructor-arg index="2" ref="ticketGrantingTicketCookieGenerator"/>
+    	<constructor-arg index="3" ref="warnCookieGenerator"/>
+    	<constructor-arg index="4" ref="ticketRegistry"/>
+    	<constructor-arg index="5"><null /></constructor-arg>
+    	<constructor-arg index="6" ref="servicesManager"/>
+  	</bean>
+ 	<!-- #DEMO# -->     
   
   
 

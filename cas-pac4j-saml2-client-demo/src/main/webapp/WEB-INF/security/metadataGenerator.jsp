@@ -36,7 +36,7 @@ Generates new metadata for service provider. Output can be used to configure you
             <td>Store for the current session:</td>
             <td>
                 <form:select path="store" multiple="false">
-                    <form:option value="true">Yes</form:option>
+                   <!-- <form:option value="true">Yes</form:option>  -->
                     <form:option value="false">No</form:option>
                 </form:select>
             </td>
@@ -188,8 +188,8 @@ Generates new metadata for service provider. Output can be used to configure you
             <td>SSL/TLS Client authentication:</td>
             <td>
                 <form:select path="tlsKey">
-                    <form:option value="">None</form:option>
                     <form:options items="${availableKeys}"/>
+                    <form:option value="">None</form:option>
                 </form:select>
             </td>
             <td class="error"><form:errors path="tlsKey"/></td>
@@ -271,7 +271,7 @@ Generates new metadata for service provider. Output can be used to configure you
             <td>Require signed ArtifactResolve:</td>
             <td>
                 <form:select path="requireArtifactResolveSigned" multiple="false">
-                    <form:option value="true">Yes</form:option>
+                    <form:option  value="true">Yes</form:option>
                     <form:option value="false">No</form:option>
                 </form:select>
             </td>
@@ -287,16 +287,21 @@ Generates new metadata for service provider. Output can be used to configure you
             <td>
                 <table>
                     <tr><th>Default</th><th>Included</th><th>Name</th></tr>
+                 
+                  <!-- 
                     <tr>
                         <td><form:radiobutton path="ssoDefaultBinding" value="<%= MetadataController.AllowedSSOBindings.SSO_ARTIFACT %>" /></td>
                         <td><form:checkbox path="ssoBindings" value="<%= MetadataController.AllowedSSOBindings.SSO_ARTIFACT %>" id="sso_0"/></td>
                         <td><label for="sso_0">SSO Artifact</label></td>
                     </tr>
+                  -->  
                     <tr>
                         <td><form:radiobutton path="ssoDefaultBinding" value="<%= MetadataController.AllowedSSOBindings.SSO_POST %>" /></td>
                         <td><form:checkbox path="ssoBindings" value="<%= MetadataController.AllowedSSOBindings.SSO_POST %>" id="sso_1"/></td>
                         <td><label for="sso_1">SSO HTTP-POST</label></td>
                     </tr>
+                  <!-- 
+                 
                     <tr>
                         <td><form:radiobutton path="ssoDefaultBinding" value="<%= MetadataController.AllowedSSOBindings.SSO_PAOS %>" /></td>
                         <td><form:checkbox path="ssoBindings" value="<%= MetadataController.AllowedSSOBindings.SSO_PAOS %>" id="sso_2"/></td>
@@ -312,6 +317,9 @@ Generates new metadata for service provider. Output can be used to configure you
                         <td><form:checkbox path="ssoBindings" value="<%= MetadataController.AllowedSSOBindings.HOKSSO_POST %>" id="sso_4"/></td>
                         <td><label for="sso_4">HoK SSO HTTP-POST</label></td>
                     </tr>
+                   -->
+                    
+                    
                 </table>
             </td>
             <td class="error">
@@ -346,12 +354,14 @@ Generates new metadata for service provider. Output can be used to configure you
             <td>Enable IDP Discovery profile:</td>
             <td>
                 <form:select path="includeDiscovery" multiple="false">
-                    <form:option value="true">Yes</form:option>
+                    <!--<form:option value="true">Yes</form:option>-->
                     <form:option value="false">No</form:option>
                 </form:select>
             </td>
             <td class="error"><form:errors path="includeDiscovery"/></td>
         </tr>
+      
+      <!--  
         <tr>
             <td></td>
             <td colspan="2">
@@ -363,7 +373,8 @@ Generates new metadata for service provider. Output can be used to configure you
                 </small>
             </td>
         </tr>
-
+-->
+<!--  
         <tr>
             <td>Custom URL for IDP Discovery:</td>
                     <td>
@@ -371,13 +382,16 @@ Generates new metadata for service provider. Output can be used to configure you
             </td>
             <td class="error"><form:errors path="customDiscoveryURL"/></td>
         </tr>
+  -->
+    <!--     
         <tr>
             <td></td>
             <td colspan="2">
                 <small>When not set local IDP discovery URL is automatically generated when IDP discovery is enabled.</small>
             </td>
         </tr>
-
+-->
+    <!--  
         <tr>
             <td>Include IDP Discovery extension in metadata:</td>
             <td>
@@ -388,7 +402,7 @@ Generates new metadata for service provider. Output can be used to configure you
             </td>
             <td class="error"><form:errors path="includeDiscoveryExtension"/></td>
         </tr>
-
+-->
         <tr>
             <td colspan="2">
                 <br/>

@@ -146,6 +146,19 @@
             </tr>
 
         </c:if>
+        
+       
+        
+        <tr>
+            <td>Metadata:</td>
+           <td><br /><br />
+             <c:out value="${metadata.serializedMetadata}" escapeXml="true" />
+            </td>
+            
+            
+        </tr>
+        
+     
 
     </table>
 

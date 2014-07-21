@@ -28,14 +28,20 @@ under the License.
  <!-- #DEMO# -->
  <!-- requestParameters.action: not null if remote idp is redirecting to cas with logout assertion -->
     <decision-state id="beforeLogoutExternal">
-    		<if test="requestParameters.action != null" then="terminateSession" else="clientLogoutAction" />
+    		<if test="requestParameters.action != null" then="logoutProcessingAction" else="clientLogoutAction"  />
     </decision-state>
-    <action-state id="clientLogoutAction">
+    <action-state id="logoutProcessingAction">  <!-- logout response from remote idp -->
+        <evaluate expression="logoutProcessingAction" />
+        <transition on="success" to="terminateSession" />
+        <transition on="error" to="logoutErrorSaml2View" />
+    </action-state>
+    <action-state id="clientLogoutAction">	<!-- user logout action -->
         <evaluate expression="clientLogoutAction" />
         <transition on="success" to="terminateSession" />
-          <transition on="stop" to="logoutSaml2View" />
+        <transition on="stop" to="logoutSaml2View" />
     </action-state>
-     <view-state id="logoutSaml2View" view="logoutSaml2View" />
+    <view-state id="logoutSaml2View" view="logoutSaml2View" />
+    <view-state id="logoutErrorSaml2View" view="logoutErrorSaml2View" />
 <!-- #DEMO# -->
 
 

@@ -53,12 +53,12 @@ import org.w3c.dom.Element;
 
 
 @SuppressWarnings({ "unchecked" })
-public final class ClientLogoutAction extends AbstractAction {
+public final class LogoutProcessingAction extends AbstractAction {
 
     /**
      * The logger.
      */
-    private final Logger logger = LoggerFactory.getLogger(ClientLogoutAction.class);
+    private final Logger logger = LoggerFactory.getLogger(LogoutProcessingAction.class);
     
   
     /** CookieGenerator for TGT Cookie. */
@@ -99,7 +99,7 @@ public final class ClientLogoutAction extends AbstractAction {
      * @param theCentralAuthenticationService The service for CAS authentication
      * @param theClients The clients for authentication
      */
-    public ClientLogoutAction(
+    public LogoutProcessingAction(
     		final CentralAuthenticationService theCentralAuthenticationService,
             final Clients theClients,
             final CookieRetrievingCookieGenerator tgtCookieGenerator,
@@ -133,7 +133,7 @@ public final class ClientLogoutAction extends AbstractAction {
 	    final WebContext webContext = new J2EContext(request, response);
 	    
 	    logger.debug("=========================================================" );
-	    logger.debug("ClientLogoutAction.doExecute: " );
+	    logger.debug("LogoutProcessingAction.doExecute: " );
         logger.debug("request.method: " +request.getMethod() );
         logger.debug("request.requestURI: " +request.getRequestURI() );
         logger.debug("request.queryString: " +request.getQueryString() );
@@ -145,10 +145,7 @@ public final class ClientLogoutAction extends AbstractAction {
         	}
         logger.debug("=========================================================" );
 	    
-	    
-	    
-	    
-    
+        
     	// in login's webflow : we can get the value from context as it has already been stored
         String tgtId = WebUtils.getTicketGrantingTicketId(context);
         // for logout, we need to get the cookie's value
@@ -156,17 +153,23 @@ public final class ClientLogoutAction extends AbstractAction {
             tgtId = this.ticketGrantingTicketCookieGenerator.retrieveCookieValue(request);
         }
     	
+        //tgtId == null for logout request from idp
+        
+        Authentication authentication =null;
+        org.springframework.security.core.Authentication samlaut = null;
+        
+        if (tgtId!=null){
           
         final TicketGrantingTicket ticketGrantingTicket = 
         		this.ticketRegistry.getTicket(tgtId, TicketGrantingTicket.class);
 
-        Authentication authentication = ticketGrantingTicket.getAuthentication();
+        authentication = ticketGrantingTicket.getAuthentication();
         
-      	Principal principal = authentication.getPrincipal();
-         
+        Principal principal = authentication.getPrincipal();
+        
         Map<String,Object> principalAttributes = principal.getAttributes();
        
-        org.springframework.security.core.Authentication samlaut = null;
+        samlaut = null;
         
         for (Map.Entry<String,Object> entry : principalAttributes.entrySet()) {
        
@@ -175,57 +178,46 @@ public final class ClientLogoutAction extends AbstractAction {
             if("externalLibAuthentication".equals(entry.getKey())){
             	samlaut = (org.springframework.security.core.Authentication) entry.getValue();
             }
-            
         }  
+        }
         
         
-        if(samlaut!=null){
+        boolean dologout = false;
+        
+        //evaluate remote logout response
+        if ( "otherServiceLogout".equals( request.getParameter("action") )  ){
+        	dologout = true;
+        }
+        
+        if ( "SingleLogout".equals( request.getParameter("action") )  ){
         	
-      	  SAMLCredential sAMLCredential =  (SAMLCredential) samlaut.getCredentials();
-          List<Attribute> attributes = sAMLCredential.getAttributes();
-            
-            for(int i=0;i<attributes.size();i++){
-             	  org.opensaml.saml2.core.impl.AttributeImpl attribute = (AttributeImpl) attributes.get(i);
-             	 logger.debug("TGT("+tgtId+") Attribute(externalLibAuthentication).credentials.attributes.friendlyName: "+ 
-             	  attribute.getFriendlyName() ); 
+        	String clientName = "Saml2ClientWrapper";
+        	
+        	if (StringUtils.isNotBlank(clientName)) {
+        	      
+                final Object client =
+                        (BaseClient<Credentials, CommonProfile>) this.clients.findClient(clientName);
+                
+                if (client instanceof Saml2ClientWrapper){
+                	
+                  	Saml2ClientWrapper saml2ClientWrapper = (Saml2ClientWrapper) client;
             	  
-                  for (XMLObject attributeValue : attribute.getAttributeValues()) {
-                   	Element attributeValueElement = attributeValue.getDOM();
-                      String value = attributeValueElement.getTextContent();
-                      logger.debug(attribute.getFriendlyName()+" value: "+ value ); 
-                    }
-             } 
-       }
+                  	// i log out if response assertion is valid
+                   	dologout = saml2ClientWrapper.processLogout(webContext,samlaut);
+                    	
+                }	
+                				
+           }
+        }	
         
         
-       
-        String clientName = authentication.getAttributes().get("clientName").toString();
-       
-        logger.debug("TGT("+tgtId+") from client: "+ clientName );
-             	
-        if (StringUtils.isNotBlank(clientName)) {
-      
-            final Object client =
-                    (BaseClient<Credentials, CommonProfile>) this.clients.findClient(clientName);
-            
-           
-            if (client instanceof Saml2ClientWrapper){
-            	
-              	Saml2ClientWrapper saml2ClientWrapper = (Saml2ClientWrapper) client;
-        	  
-              	logger.debug("TGT("+tgtId+") "+client +" callbackUrl "+saml2ClientWrapper.getCallbackUrl() );
-            
-              	saml2ClientWrapper.logout(webContext,samlaut);
-            					
-                return new Event(this, "stop");
-            
-            }	
-            				
-       }
-            
-        return success();	
-            
+    if (dologout){        
+    	return success();	
+    }else{
+   	 return error();	
     }
-
+    
+   }     
+    
     
 }

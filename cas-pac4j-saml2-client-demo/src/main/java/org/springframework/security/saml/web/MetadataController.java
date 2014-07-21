@@ -75,6 +75,7 @@ public class MetadataController {
 
     }
 
+    /*
     @RequestMapping(value = "/refresh")
     public ModelAndView refreshMetadata() throws MetadataProviderException {
 
@@ -82,7 +83,9 @@ public class MetadataController {
         return metadataList();
 
     }
-
+   */
+   
+    /*
     @RequestMapping(value = "/provider")
     public ModelAndView displayProvider(@RequestParam("providerIndex") int providerIndex) {
 
@@ -93,7 +96,9 @@ public class MetadataController {
         return model;
 
     }
-
+    */
+    
+    /*
     @RequestMapping(value = "/removeProvider")
     public ModelAndView removeProvider(@RequestParam int providerIndex) throws MetadataProviderException {
 
@@ -102,7 +107,9 @@ public class MetadataController {
         return metadataList();
 
     }
-
+    */
+    
+    
     @RequestMapping(value = "/generate")
     public ModelAndView generateMetadata(HttpServletRequest request) throws KeyStoreException {
 
@@ -120,6 +127,7 @@ public class MetadataController {
 
     }
 
+    
     @RequestMapping(value = "/create")
     public ModelAndView createMetadata(@ModelAttribute("metadata") MetadataForm metadata, BindingResult bindingResult) throws MetadataProviderException, MarshallingException, KeyStoreException {
 
@@ -229,6 +237,7 @@ public class MetadataController {
      * @throws MetadataProviderException in case metadata can't be located
      * @throws MarshallingException      in case de-serialization into string fails
      */
+    
     @RequestMapping(value = "/display")
     public ModelAndView displayMetadata(@RequestParam("entityId") String entityId) throws MetadataProviderException, MarshallingException {
 
@@ -242,7 +251,8 @@ public class MetadataController {
         return displayMetadata(entityDescriptor, extendedMetadata);
 
     }
-
+    
+    
     protected ModelAndView displayMetadata(EntityDescriptor entityDescriptor, ExtendedMetadata extendedMetadata) throws MarshallingException {
 
         MetadataForm metadata = new MetadataForm();
@@ -271,7 +281,7 @@ public class MetadataController {
         return model;
 
     }
-
+    
     protected String getMetadataAsString(EntityDescriptor descriptor) throws MarshallingException {
 
         MarshallerFactory marshallerFactory = Configuration.getMarshallerFactory();

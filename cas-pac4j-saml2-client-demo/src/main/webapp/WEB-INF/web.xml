@@ -74,6 +74,20 @@
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  
+  <!-- for metadata generation -->
+   	 <servlet>
+        <servlet-name>saml</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>4</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>saml</servlet-name>
+        <url-pattern>/saml/web/*</url-pattern>
+    </servlet-mapping> 
+  
+  
+  
   <servlet-mapping>
     <servlet-name>cas</servlet-name>
     <url-pattern>/login</url-pattern>

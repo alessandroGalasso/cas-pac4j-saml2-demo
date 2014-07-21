@@ -34,8 +34,10 @@ public class MetadataForm {
             MetadataController.AllowedSSOBindings.SSO_ARTIFACT.toString(),
             MetadataController.AllowedSSOBindings.SSO_POST.toString(),
     };
-    private String ssoDefaultBinding = MetadataController.AllowedSSOBindings.SSO_ARTIFACT.toString();
+    //private String ssoDefaultBinding = MetadataController.AllowedSSOBindings.SSO_ARTIFACT.toString();
+    private String ssoDefaultBinding = MetadataController.AllowedSSOBindings.SSO_POST.toString();
 
+    
     private String signingKey;
     private String encryptionKey;
     private String tlsKey;
@@ -52,10 +54,10 @@ public class MetadataForm {
     private String customDiscoveryResponseURL;
 
     private boolean requestSigned = true;
-    private boolean wantAssertionSigned;
-    private boolean requireLogoutRequestSigned;
-    private boolean requireLogoutResponseSigned;
-    private boolean requireArtifactResolveSigned;
+    private boolean wantAssertionSigned = true;
+    private boolean requireLogoutRequestSigned = true;
+    private boolean requireLogoutResponseSigned = true;
+    private boolean requireArtifactResolveSigned = true;
 
     public MetadataForm() {
     }

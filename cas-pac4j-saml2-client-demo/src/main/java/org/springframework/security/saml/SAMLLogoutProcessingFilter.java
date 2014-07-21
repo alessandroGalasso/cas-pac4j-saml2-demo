@@ -181,7 +181,9 @@ public class SAMLLogoutProcessingFilter extends LogoutFilter {
      /*
       * to do: map to cas logout flow
       */
-     public void processLogoutPac4j(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+     public boolean processLogoutPac4j(HttpServletRequest request, HttpServletResponse response
+    		 ,org.springframework.security.core.Authentication auth
+    		 ) throws IOException, ServletException {
 
        
              SAMLMessageContext context;
@@ -204,10 +206,14 @@ public class SAMLLogoutProcessingFilter extends LogoutFilter {
                  throw new SAMLRuntimeException("Incoming SAML message is invalid", e);
              }
 
+             log.debug("Valid Incoming SAML LOGOUT message (response to slo or incoming slo assertion)");
+             
              boolean doLogout = true;
 
              if (context.getInboundSAMLMessage() instanceof LogoutResponse) {
 
+            	 
+            	 //assertion in response to cas logout request
                  try {
                      logoutProfile.processLogoutResponse(context);
                      samlLogger.log(SAMLConstants.LOGOUT_RESPONSE, SAMLConstants.SUCCESS, context);
@@ -215,11 +221,15 @@ public class SAMLLogoutProcessingFilter extends LogoutFilter {
                      samlLogger.log(SAMLConstants.LOGOUT_RESPONSE, SAMLConstants.FAILURE, context, e);
                      log.warn("Received global logout response is invalid", e);
                  }
+                 
+                 
+                 
+                 
 
              } else if (context.getInboundSAMLMessage() instanceof LogoutRequest) {
 
-                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                 SAMLCredential credential = null;
+            	 // incoming logout assertion 
+            	 SAMLCredential credential = null;
                  if (auth != null) {
                      credential = (SAMLCredential) auth.getCredentials();
                  }
@@ -232,12 +242,18 @@ public class SAMLLogoutProcessingFilter extends LogoutFilter {
                      samlLogger.log(SAMLConstants.LOGOUT_REQUEST, SAMLConstants.FAILURE, context, e);
                      log.warn("Received global logout request is invalid", e);
                  }
-
-             }
+                 
+                 
+                 // to do !!!!!!!!!!!!!!!!!!!!!!!!!!!
+                 doLogout = false;
+                 
+                 
+                }
 
              if (doLogout) {
-                // map to cas
-            	 //super.doFilter(request, response, chain);
+                return true;
+             }else{
+            	 return false;
              }
 
         

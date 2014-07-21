@@ -198,6 +198,38 @@ public class Saml2ClientWrapper extends BaseClient<Saml2Credentials, Saml2Profil
     
     
  
+    
+    
+    
+    public boolean processLogout(final WebContext wc,org.springframework.security.core.Authentication authenticationsaml) {
+
+      J2EContext jc = (J2EContext) wc;
+   	  HttpServletRequest request = jc.getRequest();
+      HttpServletResponse response = jc.getResponse();
+      
+      boolean dologout = false;
+     	  
+      try {
+		
+    	  dologout = sAMLLogoutProcessingFilter.processLogoutPac4j(request, response,authenticationsaml);
+		
+       } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	  
+        return dologout;
+    }
+    
+    
+    
+    
+    
+    
+    
     public String logout(final WebContext wc,org.springframework.security.core.Authentication authenticationsaml
     		) {
 
