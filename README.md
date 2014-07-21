@@ -33,7 +33,7 @@ note:
 
 wip:
 
-- map global saml logout : SAMLLogoutFilter
+- saml logout response to logout assertion
 
 
 my localhost (host remapped) test environment:
