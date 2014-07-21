@@ -47,34 +47,22 @@ my localhost (host remapped) test environment:
 flow Example
 
 - LOGIN
-  
 - https://app.alessandro.it:2443/cas-client-webapp/	HTTPS	GET	200
-  
 - https://app.alessandro.it:2443/cas-client-webapp/p	HTTPS	GET	302
-  
- -/caspac/login?service=https%3A%2F%2Fapp.alessandro.it%3A2443%2Fcas-client-webapp%2Fj_spring_cas_security_check	HTTPS	GET	200
-  
- -/caspac/login?client_name=Saml2ClientWrapper&needs_client_redirection=true&idp=https://idp.alessandro.it/idp/shibboleth	HTTPS	GET	200	text/html
- 
+- /caspac/login?service=https%3A%2F%2Fapp.alessandro.it%3A2443%2Fcas-client-webapp%2Fj_spring_cas_security_check	HTTPS	GET	200
+- /caspac/login?client_name=Saml2ClientWrapper&needs_client_redirection=true&idp=https://idp.alessandro.it/idp/shibboleth	HTTPS	GET	200
 - https://idp.alessandro.it/idp/profile/SAML2/POST/SSO	HTTPS	POST	302
- 
 - https://idp.alessandro.it/idp/AuthnEngine	HTTPS	POST	302
- 
 - https://idp.alessandro.it/idp/Authn/UserPassword	HTTPS	POST	200
- 
 - https://idp.alessandro.it/idp/Authn/UserPassword	HTTPS	POST	302
- 
 - https://idp.alessandro.it/idp/profile/SAML2/POST/SSO	HTTPS	POST	200
- 
-- /caspac/login?client_name=Saml2ClientWrapper	HTTPS	POST	302
- 
--https://app.alessandro.it:2443/cas-client-webapp/j_spring_cas_security_check?ticket=ST-5-AWJhuZIeD0WKd2MIsRcE-cas01.example.org	HTTPS	POST	302
- 
+- caspac/login?client_name=Saml2ClientWrapper	HTTPS	POST	302
+- https://app.alessandro.it:2443/cas-client-webapp/j_spring_cas_security_check?ticket=ST-5-AWJ...	HTTPS	POST	302
 - https://app.alessandro.it:2443/cas-client-webapp/p	HTTPS	POST	200
  
-
 - LOGOUT
 - https://app.alessandro.it:2443/cas-client-webapp/j_spring_cas_security_logout	HTTPS	GET	302	0	-609164170
-- /caspac/logout	HTTPS	GET	302
+- caspac/logout	HTTPS	GET	302
 - https://idp.alessandro.it/idp/profile/SAML2/Redirect/SLO?SAMLRequest=nZJBb%2BM.......	HTTPS	GET	200
 - https://cas.alessandro.it:6443/caspac/logout?action=SingleLogout	HTTPS	POST	200
+ 
