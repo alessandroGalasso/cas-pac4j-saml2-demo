@@ -1,0 +1,5 @@
+/catalina.policy
+/catalina.properties
+/context.xml
+/tomcat-users.xml
+/web.xml
