@@ -53,14 +53,13 @@
 <br />
 -->
   
-   <br />
- -> <a href="https://cas.alessandro.it:6443/caspac/saml/web/metadata/generate">generate sp metadata</a>
-   <br />
+ <br />- <a href="${CasClientUrl}"><b>Authenticate with another CAS</a></b><br />   
  <c:forEach var="idpItem" items="${idp}">
- <br />->   <a href="${Saml2ClientWrapperUrl}&amp;idp=${idpItem}"><b>Authenticate with a SAML provider</a></b><br />                  
+ <br />- <a href="${Saml2ClientWrapperUrl}&amp;idp=${idpItem}"><b>Authenticate with a SAML provider</a></b><br />                  
    </c:forEach>
+ <br />- <a href="https://cas.alessandro.it:6443/caspac/saml/web/metadata/generate">generate sp metadata</a><br /> 
  <br />
-  
+ 
   
 			<form:form method="post" id="fm1" cssClass="fm-v clearfix" commandName="${commandName}" htmlEscape="true">
                   <form:errors path="*" id="msg" cssClass="errors" element="div" />

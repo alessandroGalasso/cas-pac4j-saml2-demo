@@ -35,6 +35,7 @@ import org.jasig.cas.web.support.WebUtils;
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.impl.AttributeImpl;
 import org.opensaml.xml.XMLObject;
+import org.pac4j.cas.client.CasClient;
 import org.pac4j.core.client.BaseClient;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.J2EContext;
@@ -168,6 +169,9 @@ public final class ClientLogoutAction extends AbstractAction {
        
         org.springframework.security.core.Authentication samlaut = null;
         
+        Object casAuth = null;
+        
+        
         for (Map.Entry<String,Object> entry : principalAttributes.entrySet()) {
        
         	logger.debug("CAS Principal Attributes, key: "+entry.getKey() + " value: " + entry.getValue());
@@ -176,7 +180,15 @@ public final class ClientLogoutAction extends AbstractAction {
             	samlaut = (org.springframework.security.core.Authentication) entry.getValue();
             }
             
+            if("externalCasAuthentication".equals(entry.getKey())){
+            	casAuth = "";
+            }
+            
         }  
+        
+        
+        
+        
         
         
         if(samlaut!=null){
@@ -198,6 +210,16 @@ public final class ClientLogoutAction extends AbstractAction {
        }
         
         
+        
+        if(casAuth!=null){ 
+        	
+        	logger.debug("print cas values"); 
+        	
+        }
+        
+        
+        
+        
        
         String clientName = authentication.getAttributes().get("clientName").toString();
        
@@ -209,6 +231,23 @@ public final class ClientLogoutAction extends AbstractAction {
                     (BaseClient<Credentials, CommonProfile>) this.clients.findClient(clientName);
             
            
+           
+            
+            
+            if (client instanceof CasClient){
+            	
+            	CasClient casClient = (CasClient) client;
+        	  
+              	//logger.debug("TGT("+tgtId+") "+client +" callbackUrl "+client.logout url );
+            
+            	//casClient.logout(webContext,samlaut);
+            					
+                return new Event(this, "stop");
+            
+            }	
+            
+            
+            
             if (client instanceof Saml2ClientWrapper){
             	
               	Saml2ClientWrapper saml2ClientWrapper = (Saml2ClientWrapper) client;
@@ -220,6 +259,11 @@ public final class ClientLogoutAction extends AbstractAction {
                 return new Event(this, "stop");
             
             }	
+            
+            
+            
+            
+            
             				
        }
             

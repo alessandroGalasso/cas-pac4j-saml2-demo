@@ -77,6 +77,22 @@
      -->
      
      <!-- DEMO -->
+     
+<!-- test -->
+     <bean id="casSingleSignOutHandler" class="org.pac4j.cas.logout.CasSingleSignOutHandler">
+     </bean>
+     <bean id="casSingleSignOutHandler" class="org.jasig.cas.client.session.SingleSignOutHttpSessionListener">
+     </bean>
+    <bean id="cas1" class="org.pac4j.cas.client.CasClient">
+       <property name="casLoginUrl" value="https://cas.alessandro.it:6443/cas-server/login" />
+       <!-- property name="casProtocol">
+           <util:constant static-field="org.pac4j.cas.client.CasClient.CasProtocol.SAML" />
+    </property-->
+    <property name="logoutHandler" ref="casSingleSignOutHandler" />
+    <property name="" ref="casSingleSignOutHandler" />
+    </bean>
+<!-- test -->
+     
     <bean id="saml1"
           class="org.pac4j.saml.client.Saml2ClientWrapper">
         <property name="sAMLEntryPoint" ref="samlEntryPoint" />
@@ -98,8 +114,9 @@
                 <ref bean="facebook1" />
                 <ref bean="twitter1" />
                 <ref bean="caswrapper1" />
-                <ref bean="cas1" />
+                
                  -->
+                <ref bean="cas1" />
                 <ref bean="saml1" />
             </list>
         </property>
