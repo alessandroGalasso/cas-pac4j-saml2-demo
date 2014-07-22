@@ -146,8 +146,10 @@ public final class ClientLogoutAction extends AbstractAction {
         	}
         logger.debug("=========================================================" );
 	    
-	    
-	    
+        
+        //action is like a filter mapping
+	    String action = request.getParameter("action");
+	    if(action == null){action = (String) request.getAttribute("action");}
 	    
     
     	// in login's webflow : we can get the value from context as it has already been stored
@@ -163,111 +165,154 @@ public final class ClientLogoutAction extends AbstractAction {
 
         Authentication authentication = ticketGrantingTicket.getAuthentication();
         
-      	Principal principal = authentication.getPrincipal();
-         
-        Map<String,Object> principalAttributes = principal.getAttributes();
-       
-        org.springframework.security.core.Authentication samlaut = null;
+        //org.springframework.security.core.Authentication samlaut = null;
+        //Object casAuth = null;
         
-        Object casAuth = null;
-        
-        
-        for (Map.Entry<String,Object> entry : principalAttributes.entrySet()) {
-       
-        	logger.debug("CAS Principal Attributes, key: "+entry.getKey() + " value: " + entry.getValue());
-            
-            if("externalLibAuthentication".equals(entry.getKey())){
-            	samlaut = (org.springframework.security.core.Authentication) entry.getValue();
-            }
-            
-            if("externalCasAuthentication".equals(entry.getKey())){
-            	casAuth = "";
-            }
-            
-        }  
+        Object externalAuth = null;
         
         
         
         
-        
-        
-        if(samlaut!=null){
+        if(authentication==null){
+        	//let cas manage
+        	return success();
+        }else{
         	
-      	  SAMLCredential sAMLCredential =  (SAMLCredential) samlaut.getCredentials();
-          List<Attribute> attributes = sAMLCredential.getAttributes();
-            
-            for(int i=0;i<attributes.size();i++){
-             	  org.opensaml.saml2.core.impl.AttributeImpl attribute = (AttributeImpl) attributes.get(i);
-             	 logger.debug("TGT("+tgtId+") Attribute(externalLibAuthentication).credentials.attributes.friendlyName: "+ 
-             	  attribute.getFriendlyName() ); 
-            	  
-                  for (XMLObject attributeValue : attribute.getAttributeValues()) {
-                   	Element attributeValueElement = attributeValue.getDOM();
-                      String value = attributeValueElement.getTextContent();
-                      logger.debug(attribute.getFriendlyName()+" value: "+ value ); 
-                    }
-             } 
-       }
-        
-        
-        
-        if(casAuth!=null){ 
+        	 Object client = null;
         	
-        	logger.debug("print cas values"); 
+        	 // get external auth client name
+             String clientName = authentication.getAttributes().get("clientName").toString();
+             
+             logger.debug("TGT("+tgtId+"), pac4j client: "+ clientName );
+        	
+        	 if (StringUtils.isNotBlank(clientName)) {
+             	
+               	Principal principal = authentication.getPrincipal();
+                 
+                Map<String,Object> principalAttributes = principal.getAttributes();
+                 
+             	// get external auth
+                client = (BaseClient<Credentials, CommonProfile>) this.clients.findClient(clientName);
+             
+                 
+                 // get external auth
+                 for (Map.Entry<String,Object> entry : principalAttributes.entrySet()) {
+                
+                 	logger.debug("CAS Principal Attributes, key: "+entry.getKey() + " value: " + entry.getValue());
+                     
+                     if("externalAuthentication".equals(entry.getKey())){
+                     	//samlaut = (org.springframework.security.core.Authentication) entry.getValue();
+                     	externalAuth = (org.springframework.security.core.Authentication) entry.getValue();
+                     }
+                     
+                 }  
+                 
+             
+                 // log attributes
+                 if(externalAuth!=null){
+                	 
+                   boolean dologout = false; 
+                  	
+                   if (client instanceof Saml2ClientWrapper){
+                 	
+               	   SAMLCredential sAMLCredential =  (SAMLCredential)((org.springframework.security.core.Authentication)externalAuth).getCredentials();
+                   List<Attribute> attributes = sAMLCredential.getAttributes();
+                     
+                     for(int i=0;i<attributes.size();i++){
+                      	  org.opensaml.saml2.core.impl.AttributeImpl attribute = (AttributeImpl) attributes.get(i);
+                      	 logger.debug("TGT("+tgtId+") Attribute(externalLibAuthentication).credentials.attributes.friendlyName: "+ 
+                      	  attribute.getFriendlyName() ); 
+                     	  
+                           for (XMLObject attributeValue : attribute.getAttributeValues()) {
+                            	Element attributeValueElement = attributeValue.getDOM();
+                               String value = attributeValueElement.getTextContent();
+                               logger.debug(attribute.getFriendlyName()+" value: "+ value ); 
+                             }
+                      } 
+                     
+                     
+                 	Saml2ClientWrapper saml2ClientWrapper = (Saml2ClientWrapper) client;
+              	  
+                  	logger.debug("TGT("+tgtId+") "+client +" callbackUrl "+saml2ClientWrapper.getCallbackUrl() );
+                
+                  	
+                  	if(action==null){
+                  		
+                  		//stop flow, redirect post to idp
+                   		logger.debug("pac4j client: "+ clientName +" creating logout saml assertion");
+                  		saml2ClientWrapper.logout(webContext,(org.springframework.security.core.Authentication) externalAuth);
+                  		dologout = false;
+                        return new Event(this, "stop");  // redirect to idp, post request logout assertion
+              
+                  		
+                  	}else{
+                  		
+                  		if(action.equals("SingleLogout")){
+                      		
+                      		//ok: process response from my request logout assertion
+                          	//ok: log out if response assertion is valid
+                      	    //to do :  Process request and send response to the sender in case the request is valid
+                      		logger.debug("pac4j client: "+ clientName +" processing logout saml assertion");
+                      		dologout = saml2ClientWrapper.processLogout(webContext,(org.springframework.security.core.Authentication)externalAuth);
+                      	
+                       	}else{
+                       		
+                       		//incoming assertion not mappet to cas logout flow
+                       		logger.error("pac4j client: "+ clientName +" action: "+action+ " isnt supported, incoming assertion not mappet to cas logout flow");
+                      		
+                       		
+                       	}
+                  		
+                  		
+                  	}
+                     
+                   }   
+                   
+                   
+                   
+                   
+                   
+                   //if (client instanceof CasClientWrapper){
+                	//   return new Event(this, "stop");
+                   //}
+                   
+                   
+                   if(dologout){
+                	   
+                	   logger.warn("pac4j client: "+ clientName +" authorized logout proceed cas logout flow");
+                	   return success();
+                	   
+                   }else{
+                	   
+                	   logger.error("pac4j client: "+ clientName +" has not authorized logout, throw error");
+                	   return error();
+                	   
+                   }
+                
+                 
+                 }else{
+                	
+                	logger.warn("pac4j client: "+ clientName +" doesnt support logout");
+                    return success();
+                	
+                }
+                 
+                 
+             }else{
+             	
+            	logger.debug("non not a pac4j auth, carry on");
+             	return success();
+             	
+             }
+        	
+        	
+        	
+        	
+        	
         	
         }
         
-        
-        
-        
        
-        String clientName = authentication.getAttributes().get("clientName").toString();
-       
-        logger.debug("TGT("+tgtId+") from client: "+ clientName );
-             	
-        if (StringUtils.isNotBlank(clientName)) {
-      
-            final Object client =
-                    (BaseClient<Credentials, CommonProfile>) this.clients.findClient(clientName);
-            
-           
-           
-            
-            
-            if (client instanceof CasClient){
-            	
-            	CasClient casClient = (CasClient) client;
-        	  
-              	//logger.debug("TGT("+tgtId+") "+client +" callbackUrl "+client.logout url );
-            
-            	//casClient.logout(webContext,samlaut);
-            					
-                return new Event(this, "stop");
-            
-            }	
-            
-            
-            
-            if (client instanceof Saml2ClientWrapper){
-            	
-              	Saml2ClientWrapper saml2ClientWrapper = (Saml2ClientWrapper) client;
-        	  
-              	logger.debug("TGT("+tgtId+") "+client +" callbackUrl "+saml2ClientWrapper.getCallbackUrl() );
-            
-              	saml2ClientWrapper.logout(webContext,samlaut);
-            					
-                return new Event(this, "stop");
-            
-            }	
-            
-            
-            
-            
-            
-            				
-       }
-            
-        return success();	
             
     }
 

@@ -150,7 +150,7 @@ public class Saml2ClientWrapper extends BaseClient<Saml2Credentials, Saml2Profil
         	profile.setId(overwriteId);
         }
         
-        profile.addAttribute("externalLibAuthentication",credentials.getExternalLibAuthentication());
+        profile.addAttribute("externalAuthentication",credentials.getExternalAuthentication());
         
         return profile;
     }
@@ -211,6 +211,7 @@ public class Saml2ClientWrapper extends BaseClient<Saml2Credentials, Saml2Profil
      	  
       try {
 		
+    	  //to do :  Process request and send response to the sender in case the request is valid
     	  dologout = sAMLLogoutProcessingFilter.processLogoutPac4j(request, response,authenticationsaml);
 		
        } catch (IOException e) {

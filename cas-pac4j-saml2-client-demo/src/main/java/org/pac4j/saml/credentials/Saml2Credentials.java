@@ -36,21 +36,20 @@ public class Saml2Credentials extends Credentials {
 
     private final List<Attribute> attributes;
     
-    private final  org.springframework.security.core.Authentication externalLibAuthentication;
+    private final  org.springframework.security.core.Authentication externalAuthentication;
     
-     
-	public org.springframework.security.core.Authentication getExternalLibAuthentication() {
-		return externalLibAuthentication;
+   
+	public org.springframework.security.core.Authentication getExternalAuthentication() {
+		return externalAuthentication;
 	}
 
-
 	public Saml2Credentials(final NameID nameId, final List<Attribute> attributes, final String clientName
-		,	final org.springframework.security.core.Authentication externalLibAuthentication
+		,	final org.springframework.security.core.Authentication externalAuthentication
 			) {
         this.nameId = nameId;
         this.attributes = attributes;
         setClientName(clientName);
-        this.externalLibAuthentication = externalLibAuthentication;
+        this.externalAuthentication = externalAuthentication;
         
     }
 
