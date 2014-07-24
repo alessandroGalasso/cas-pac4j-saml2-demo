@@ -150,6 +150,7 @@ public final class ClientSloAction extends AbstractAction {
      * logout POST from remote server   (server-->server)
      * CAS: post logout from server is mapped to /login?clientname= (here)
      * SAML: post logout from server is mapped to /logout?action=SingleLogout (logout webflow)
+     * error: logout on remote cas --> post here back channel logout --> doesnt back channel logout on webapp
      */
     @Override
     protected Event doExecute(final RequestContext context) throws Exception {
@@ -241,8 +242,7 @@ public final class ClientSloAction extends AbstractAction {
             		                	 
             		                	 
             		                                	String extCredentials = (String) externalAuth.getCredentials();
-            		                                	AttributePrincipalImpl extPrincipal = (AttributePrincipalImpl) externalAuth.getPrincipal();
-            		                 
+            		                               
             		                                		
             		                                		if(extCredentials.equals(token)){
             	                    		

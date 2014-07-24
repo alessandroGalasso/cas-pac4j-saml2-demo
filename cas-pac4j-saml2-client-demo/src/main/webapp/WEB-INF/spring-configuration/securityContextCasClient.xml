@@ -51,15 +51,11 @@
      <bean id = "casauthenticationUserDetailsService"
             class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
 		
-			<property name="userDetailsService" ref="userServiceCas" />
+			
     </bean>
   
 
- 	<security:user-service id="userServiceCas"> 
-		<security:user name="xxxx"  authorities="xxxxxx" /> 
-	</security:user-service> 
-
-
+ 	
 
   
  

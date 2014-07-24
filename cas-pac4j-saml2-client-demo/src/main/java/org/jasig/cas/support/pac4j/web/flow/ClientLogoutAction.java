@@ -39,6 +39,7 @@ import org.pac4j.cas.client.CasClient;
 import org.pac4j.cas.client.CasClientWrapper;
 import org.pac4j.core.client.BaseClient;
 import org.pac4j.core.client.Clients;
+import org.pac4j.core.context.HttpConstants;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
@@ -249,10 +250,15 @@ public final class ClientLogoutAction extends AbstractAction {
                   		
                    		//do nothing... invalidate user , carry on cas webflow
                    		saml2ClientWrapper.logout(webContext,(org.springframework.security.core.Authentication) externalAuth);
-                  		
+                   		logger.debug("should be redirected here");
                    		dologout = false;
-                        return new Event(this, "stop");  // redirect to idp, post request logout assertion
+                        //return new Event(this, "stop");  // redirect to idp, post request logout assertion
               
+                		response.flushBuffer();
+        				final ExternalContext externalContext = ExternalContextHolder.getExternalContext();
+                    	externalContext.recordResponseComplete();
+	                    return new Event(this, "stop");
+                   		
                   		
                   	}else{
                   		
@@ -263,7 +269,8 @@ public final class ClientLogoutAction extends AbstractAction {
                       	    //to do :  Process request and send response to the sender in case the request is valid
                       		logger.debug("pac4j client: "+ clientName +" processing logout saml assertion");
                       		dologout = saml2ClientWrapper.processLogout(webContext,(org.springframework.security.core.Authentication)externalAuth);
-                      	
+                      		logger.debug("dologout: "+ dologout);
+                      		
                        	}else{
                        		
                        		//incoming assertion not mappet to cas logout flow
