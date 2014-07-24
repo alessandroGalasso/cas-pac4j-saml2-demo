@@ -26,15 +26,21 @@ under the License.
 
 
  <!-- #DEMO# -->
-     <action-state id="clientLogoutAction">	
+ <action-state id="clientSloAction">
+        <evaluate expression="clientSloAction" />
+        <transition on="success" to="clientLogoutAction" />
+        <transition on="stop" to="dummyView" />
+ </action-state>
+ <end-state id="dummyView"  />
+ <action-state id="clientLogoutAction">	
         <evaluate expression="clientLogoutAction" />
         <transition on="success" to="terminateSession" />
-        <transition on="stop" to="logoutSaml2View" />
-        <transition on="error" to="logoutErrorSaml2View" />
-    </action-state>
-    <view-state id="logoutSaml2View" view="logoutSaml2View" />
-    <view-state id="logoutErrorSaml2View" view="logoutErrorSaml2View" />
+        <transition on="stop" to="dummyView" />
+        <transition on="clientRedirect" to="clientRedirectState" />
+ </action-state>
+ <end-state id="clientRedirectState" view="externalRedirect:#{requestSingleLogout}" />
 <!-- #DEMO# -->
+
 
 
 <action-state id="terminateSession">

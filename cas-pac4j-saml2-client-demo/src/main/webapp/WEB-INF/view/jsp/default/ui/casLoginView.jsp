@@ -52,8 +52,8 @@
 <a href="${CasOAuthWrapperClientUrl}">Authenticate with another CAS server using OAuth v2.0 protocol</a><br />  
 <br />
 -->
-  
- <br />- <a href="${CasClientUrl}"><b>Authenticate with another CAS</a></b><br />   
+ 
+ <br />- <a href="${CasClientWrapperUrl}"><b>Authenticate with another CAS</a></b><br />   
  <c:forEach var="idpItem" items="${idp}">
  <br />- <a href="${Saml2ClientWrapperUrl}&amp;idp=${idpItem}"><b>Authenticate with a SAML provider</a></b><br />                  
    </c:forEach>

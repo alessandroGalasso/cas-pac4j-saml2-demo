@@ -30,6 +30,12 @@
     </on-start>
 
     <!-- #DEMO# -->
+    <action-state id="clientSloAction">
+        <evaluate expression="clientSloAction" />
+        <transition on="success" to="clientAction" />
+        <transition on="stop" to="dummyView" />
+    </action-state>
+    <end-state id="dummyView"  />
     <action-state id="clientAction">
         <evaluate expression="clientAction" />
         <transition on="success" to="sendTicketGrantingTicket" />

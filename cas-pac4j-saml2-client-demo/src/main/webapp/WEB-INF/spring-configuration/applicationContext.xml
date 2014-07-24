@@ -78,9 +78,15 @@
      
      <!-- DEMO -->
      
-<!-- test -->
-<!-- here the new cas client -->
-<!-- test -->
+   
+     
+    <bean id="cas1"
+         class="org.pac4j.cas.client.CasClientWrapper">
+        <property name="casEntryPointCas" ref="casEntryPointCas" />
+        <property name="casFilterCas" ref="casFilterCas" />
+        <!-- <property name="requestSingleLogoutFilterCas" ref="requestSingleLogoutFilterCas" /> -->
+        <property name="singleLogoutFilterCas" ref="singleLogoutFilterCas" />
+    </bean> 
      
     <bean id="saml1"
           class="org.pac4j.saml.client.Saml2ClientWrapper">
@@ -105,7 +111,8 @@
                 <ref bean="caswrapper1" />
                 <ref bean="cas1" />
                  -->
-               
+             
+                <ref bean="cas1" />
                 <ref bean="saml1" />
             </list>
         </property>

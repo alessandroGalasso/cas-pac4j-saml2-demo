@@ -70,6 +70,8 @@ Client<C, U>, Cloneable {
     public final static String ATTEMPTED_AUTHENTICATION_SUFFIX = "$attemptedAuthentication";
 
     protected String callbackUrl;
+    
+    protected String logoutCallbackUrl;
 
     private String name;
 
@@ -100,8 +102,19 @@ Client<C, U>, Cloneable {
     public void setCallbackUrl(final String callbackUrl) {
         this.callbackUrl = callbackUrl;
     }
+    
+    
+    
 
-    public String getCallbackUrl() {
+    public String getLogoutCallbackUrl() {
+		return logoutCallbackUrl;
+	}
+
+	public void setLogoutCallbackUrl(String logoutCallbackUrl) {
+		this.logoutCallbackUrl = logoutCallbackUrl;
+	}
+
+	public String getCallbackUrl() {
         return this.callbackUrl;
     }
 
