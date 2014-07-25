@@ -29,12 +29,15 @@ used libraries / projects:
 - used a RedirectType = DUMMY to delegate all the work to wrapped libs
 
 
+
 <h4>to do:</h4>
 
 - saml idp process back channel call
 - back channel to proxy authenticated apps (seems that  destroing TGT on CAS 4.0.1-SNAPSHOT isnt sending a proper logoutRequest parameter to webapps) so a remote server logout destroy de proxy server tgt but apps are still logged in
 
--<h4Overview</h4>
+
+
+<h4Overview</h4>
 
 		cas-client-remotecas-webapp  	----------------------->		cas-server	----> xml
 		
