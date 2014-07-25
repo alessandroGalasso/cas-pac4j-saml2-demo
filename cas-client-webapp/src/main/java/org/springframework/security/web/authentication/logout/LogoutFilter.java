@@ -99,15 +99,13 @@ public class LogoutFilter extends GenericFilterBean {
         		String paramName = (String)enParams.nextElement();
         		System.out.println(paramName+": "+request.getParameter(paramName));
         	}
-        	System.out.println("=========================================================\n\n" );
+        System.out.println("=========================================================\n\n" );
       
         
         
 
         if (requiresLogout(request, response)) {
         	
-        	//1 a seguito del mio clic su logout questo e' il primo posto che agisce
-        	System.out.println("--->LogoutFilter: if (requiresLogout(request, response)) {" );
         	
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -116,27 +114,19 @@ public class LogoutFilter extends GenericFilterBean {
             }
 
             for (LogoutHandler handler : handlers) {
-            	System.out.println("--->2 LogoutFilter:handler.class "+handler.getClass() );
-            	
             	SecurityContextLogoutHandler securityContextLogoutHandler = (SecurityContextLogoutHandler) handler;
             	
             	securityContextLogoutHandler.logout(request, response, auth);
             }
 
-            System.out.println("--->3 LogoutFilter:onLogoutSuccess" );
-            //--->LogoutFilter:onLogoutSuccess
+             SimpleUrlLogoutSuccessHandler simpleUrlLogoutSuccessHandler =  (SimpleUrlLogoutSuccessHandler) logoutSuccessHandler;
             
-            SimpleUrlLogoutSuccessHandler simpleUrlLogoutSuccessHandler =  (SimpleUrlLogoutSuccessHandler) logoutSuccessHandler;
-            
-            // super.handle
-            // redirectStrategy.sendRedirect(request, response, targetUrl);
-             simpleUrlLogoutSuccessHandler.onLogoutSuccess(request, response, auth);
+              simpleUrlLogoutSuccessHandler.onLogoutSuccess(request, response, auth);
 
             return;
         }
 
-        System.out.println("--->LogoutFilter:chain.doFilter(request, response);" );
-        chain.doFilter(request, response);
+       chain.doFilter(request, response);
     }
 
     /**

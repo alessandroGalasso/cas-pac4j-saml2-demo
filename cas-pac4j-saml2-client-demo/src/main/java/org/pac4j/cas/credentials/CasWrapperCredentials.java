@@ -25,7 +25,7 @@ import org.springframework.security.core.Authentication;
  * @author Jerome Leleu
  * @since 1.4.0
  */
-public class CasCredentials extends Credentials {
+public class CasWrapperCredentials extends Credentials {
     
     private static final long serialVersionUID = -6006976366005458716L;
     
@@ -40,7 +40,7 @@ public class CasCredentials extends Credentials {
 		return externalAuthentication;
 	}
 
-	public CasCredentials(final String serviceTicket, final String clientName,final Authentication externalAuthentication) {
+	public CasWrapperCredentials(final String serviceTicket, final String clientName,final Authentication externalAuthentication) {
         this.serviceTicket = serviceTicket;
         setClientName(clientName);
         this.externalAuthentication = externalAuthentication;

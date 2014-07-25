@@ -31,7 +31,7 @@ import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.core.impl.AttributeImpl;
 import org.opensaml.saml2.core.impl.NameIDImpl;
 import org.opensaml.xml.XMLObject;
-import org.pac4j.cas.credentials.CasCredentials;
+import org.pac4j.cas.credentials.CasWrapperCredentials;
 import org.pac4j.cas.profile.CasProfile;
 import org.pac4j.cas.profile.CasProxyProfile;
 import org.pac4j.core.client.BaseClient;
@@ -41,8 +41,7 @@ import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.RequiresHttpAction;
 import org.pac4j.core.exception.TechnicalException;
-import org.pac4j.saml.credentials.Saml2Credentials;
-import org.pac4j.saml.profile.Saml2Profile;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
@@ -54,7 +53,7 @@ import org.springframework.security.saml.SAMLProcessingFilter;
 import org.w3c.dom.Element;
 
 
-public class CasClientWrapper extends BaseClient<CasCredentials, CasProfile> {
+public class CasClientWrapper extends BaseClient<CasWrapperCredentials, CasProfile> {
 
     protected static final Logger logger = LoggerFactory.getLogger(CasClientWrapper.class);
 
@@ -108,7 +107,7 @@ public class CasClientWrapper extends BaseClient<CasCredentials, CasProfile> {
     }
 
     @Override
-    protected CasProfile retrieveUserProfile(final CasCredentials credentials, final WebContext context) {
+    protected CasProfile retrieveUserProfile(final CasWrapperCredentials credentials, final WebContext context) {
 
         final String ticket = credentials.getServiceTicket();
         
@@ -144,7 +143,7 @@ public class CasClientWrapper extends BaseClient<CasCredentials, CasProfile> {
 
 	
     @Override
-    protected BaseClient<CasCredentials, CasProfile> newClient() {
+    protected BaseClient<CasWrapperCredentials, CasProfile> newClient() {
     	CasClientWrapper client = new CasClientWrapper();
          return client;
     }
@@ -220,7 +219,7 @@ public class CasClientWrapper extends BaseClient<CasCredentials, CasProfile> {
     }
     
      
-    protected CasCredentials retrieveCredentials(final WebContext wc) throws RequiresHttpAction {
+    protected CasWrapperCredentials retrieveCredentials(final WebContext wc) throws RequiresHttpAction {
     	
       J2EContext jc = (J2EContext) wc;
    	  HttpServletRequest request = jc.getRequest();
@@ -244,8 +243,8 @@ public class CasClientWrapper extends BaseClient<CasCredentials, CasProfile> {
     org.springframework.security.core.userdetails.User principalImpl = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
     
    
-      CasCredentials casCredentials = 
-    		  new CasCredentials(
+      CasWrapperCredentials casCredentials = 
+    		  new CasWrapperCredentials(
     				  principalImpl.getUsername(),
     				  this.getClass().getSimpleName(),
     				  authentication

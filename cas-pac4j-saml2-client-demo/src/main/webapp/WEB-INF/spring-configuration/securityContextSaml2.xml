@@ -127,22 +127,7 @@
             <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
 			</bean>
      
-           
-           <!-- Remove HTTP-Artifact binding from your metadata , not neede anymore ??
-           <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
-    			<property name="requestSigned" value="true"/>
-            	<property name="wantAssertionSigned" value="true"/>
-            	<property name="signMetadata" value="true"/>
-  	 			<property name="bindingsSSO">
-       		     <array>
-       		     <value>urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST</value>
-        		</array>
-   		 </property>
-		</bean>-->
-           
-           
-           
-        </constructor-arg>
+         </constructor-arg>
     </bean>
     
 

@@ -85,8 +85,14 @@
          xsi:type="metadata:FilesystemMetadataProvider"
                                    metadataFile="C:\shibbolethtest\shiboleth_install_output/metadata/casalessandroit_spNew.xml"
                                    maxRefreshDelay="P1D"
-                                   
-                                    />    
+                                   />    
+        
+                                           
+        <metadata:MetadataProvider id="app.alessandro.it"
+         xsi:type="metadata:FilesystemMetadataProvider"
+                                   metadataFile="C:\shibbolethtest\shiboleth_install_output/metadata/sp.xml"
+                                   maxRefreshDelay="P1D"
+                                     />   
         
           
         <!-- Example metadata provider. -->

@@ -4,9 +4,7 @@
 
 This is an overlayed version of cas-server-webapp.
 
-This demo allows the integration of cas webapp with shiboleth idp.
-A client webApp could autenticate to cas ( with simple cas client) and cas manage the saml protocol.
-
+This demo allows the cas-webapp to be used as a proxy auth service for  shiboleth idp and another cas
 
 used libraries / projects:
 
@@ -15,36 +13,112 @@ used libraries / projects:
 - spring-security-saml https://github.com/spring-projects/spring-security-saml
 
 
-support:
-
-- SAML (2.0) with spring-security-saml
-- multiple idp
-- logout to remote idp 
-
-
-note:
-
-- saml login assertion must be stored as atttribute in the cas TGT to allow logout from cas to logged idp
-- logout-webflow.xml modified to map cas client logout to idp by ClientLogoutAction
-- spring-security-saml / securityContext.xml imported without http config, beans used in wrapper class pac4j
-- new RedirectType = DUMMY   to delegate all print outputstream work to wrapped libs
-- modified BaseSAMLMessageDecoder to allow params
+<h4>support:</h4>
+- CAS login and logout proxy
+- SAML (2.0) login and logout proxy with assertion validation
+- multiple idp saml
+- back channel logout proxy to authenticated apps for saml and cas proxy
 
 
-wip:
+<h4>note:</h4>
 
-- saml logout response to logout assertion
+- saml login assertion is stored as an attribute of the pac4j Credential to be memorized in the TGT ( to allow logout from remote idp, and to back channel to proxy authenticated apps )
+- logout-webflow.xml modified to map cas client logout via browser redirect to idp by ClientLogoutAction
+- logout-webflow.xml modified to map ClientBackChannelAction to get and send on back channel for a client pac4j 
+- spring-security-saml libs used without http config, the beans are wrapped in pac4j BaseClientclass 
+- used a RedirectType = DUMMY to delegate all the work to wrapped libs
 
 
-my localhost (host remapped) test environment:
+<h4>to do:</h4>
 
-- cas client app: https://app.alessandro.it:2443/cas-client-webapp/ (Tomcat 7)
-- cas webapp: https://cas.alessandro.it:6443/caspac/ (Tomcat 7)
-- idp: https://idp.alessandro.it/idp/ (Tomcat 6)
-- ldap: localhost:10389 (ApacheDs)
+- saml idp process back channel call
+- back channel to proxy authenticated apps (seems that  destroing TGT on CAS 4.0.1-SNAPSHOT isnt sending a proper logoutRequest parameter to webapps) so a remote server logout destroy de proxy server tgt but apps are still logged in
+
+
+<h4>Quick start & test (Windows config)</h4>
+
+- remap host: Windows\System32\drivers\etc
+
+    127.0.0.1 idp.alessandro.it
+    127.0.0.1 cas.alessandro.it
+    127.0.0.1 cas2.alessandro.it
+    127.0.0.1 app.alessandro.it
+    
+- download and install Tomcat
+
+		http://tomcat.apache.org/tomcat-6.0-doc/index.html
+		http://tomcat.apache.org/tomcat-7.0-doc/index.html
+		
+- download and install Shibboleth
+
+		http://shibboleth.net/downloads/identity-provider/latest/shibboleth-identityprovider-2.4.0-bin.zip
+		shibboleth-identityprovider-2.4.0\install.bat --> installDirectory
+		eclipse import war idp.war
+		copy TOMCAT_HOME/endorsed and copy the .jar files included in the IdP source endorsed directory (not needed for http redirect post 
+		overwrite installDirectory\* with git shibbolethInstall\* and rewrite all absolute path with your absolute path
+		
+- download and configure ldap
+
+	http://supergsego.com/apache//directory/apacheds/dist/2.0.0-M17/apacheds-2.0.0-M17.zip
+	 - start \apacheds-2.0.0-M17\bin\apacheds.bat    for   localhost:10389
+	 - add partition  id aleditta   suffix o=aleditta
+	 - ad idp user
+	 	dn: cn=aleldap,ou=people,o=aleditta
+		objectclass: top
+		objectclass: inetOrgPerson
+		objectclass: person
+		objectclass: organizationalPerson
+		cn: ale xxx
+		cn: aleldap
+		sn: xxx
+		description: xxxx
+		mail: xxx@neverland
+		uid: aleldap
+		userPassword:: e3NoYX0xdi9hRjhqQUE2SEwxQWNjakFDQ3NrTXNzYzA9	(aleldap)
+	 
+
+- eclipse config
+		
+		server tomcat with VM arguments
+			-Djavax.net.ssl.trustStore="C:\your_path\security\trustore\truststore.ts"
+			-Djavax.net.ssl.trustStorePassword="tru111"
+
+		tomcat 7 app.alessandro.it
+		tomcat 7 cas.alessandro.it
+		tomcat 7 cas2.alessandro.it
+		tomcat 6 idp.alessandro.it
+
+		map eclipse server.xml as in \Server\..\server.xml, replace abs path with yours
+
+
+- map webapps:
+			
+		cas client app of proxy cas: https://app.alessandro.it:2443/cas-client-webapp/
+		cas client app of remote cas: https://app.alessandro.it:2443/cas-client-remotecas-webapp/
+		saml client app of idp: https://app.alessandro.it:2443/spring-security-saml2-sample
+		cas proxy: https://cas.alessandro.it:6443/caspac/ 
+		cas remote: https://cas2.alessandro.it:7443/cas-server/ 
+		shibboleth idp: https://idp.alessandro.it/idp/ 
+		ldap: localhost:10389 
+ 
+ 
+ 
+- flows examples
+	
+	1)	login:  	browser:			cas-client-webapp --->  caspac --->  idp (aleldap/aleldap)--->  caspac --->  cas-client-webapp
+		logout: 	browser: 			cas-client-webapp --->  caspac --->  idp --->  caspac 
+					back channel:		caspac --> 	cas-client-webapp
+				
+	2)	login:  	browser:			cas-client-remotecas-webapp --->  cas-server (alecas/alecas) --->  cas-client-remotecas-webapp		
+		login:  	browser:			cas-client-webapp --->  caspac --->  cas-server  --->  caspac --->  cas-client-webapp
+		logout: 	browser: 			cas-client-remotecas-webapp --->  cas-server
+				 	back channel:		cas-server ---> cas-client-remotecas-webapp
+				 						cas-server ---> caspac ----> cas-client-webapp
+				 
+	
  
 
-flow Example
+SAML HTTP BROWSER FLOW EXAMPLE
 
 LOGIN
 

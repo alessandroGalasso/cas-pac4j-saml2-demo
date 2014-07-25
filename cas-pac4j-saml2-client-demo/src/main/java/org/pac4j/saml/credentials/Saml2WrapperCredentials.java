@@ -28,7 +28,7 @@ import org.pac4j.core.credentials.Credentials;
  * @author Michael Remond
  * @since 1.5.0
  */
-public class Saml2Credentials extends Credentials {
+public class Saml2WrapperCredentials extends Credentials {
 
     private static final long serialVersionUID = 5040516205957826527L;
 
@@ -43,7 +43,7 @@ public class Saml2Credentials extends Credentials {
 		return externalAuthentication;
 	}
 
-	public Saml2Credentials(final NameID nameId, final List<Attribute> attributes, final String clientName
+	public Saml2WrapperCredentials(final NameID nameId, final List<Attribute> attributes, final String clientName
 		,	final org.springframework.security.core.Authentication externalAuthentication
 			) {
         this.nameId = nameId;

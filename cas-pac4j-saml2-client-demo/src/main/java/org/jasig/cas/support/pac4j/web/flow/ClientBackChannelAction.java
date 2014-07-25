@@ -180,7 +180,7 @@ public final class ClientBackChannelAction extends AbstractAction {
             client = (BaseClient<Credentials, CommonProfile>) this.clients.findClient(clientName);
          
 	    	if (client instanceof Saml2ClientWrapper){
-            	//do nothing: works with logout mapped on logout?action=SingleLogout
+            	//do nothing: works with the slo logout mapped saml service on logout?action=SingleLogout
             	return success();
             }
        	 

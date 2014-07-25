@@ -50,16 +50,9 @@
   
      <bean id = "casauthenticationUserDetailsService"
             class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
-		
-			
-    </bean>
+	</bean>
   
-
- 	
-
-  
- 
-    <bean id="singleLogoutFilterCas" class="org.jasig.cas.client.session.SingleSignOutFilter"/>
+	<bean id="singleLogoutFilterCas" class="org.jasig.cas.client.session.SingleSignOutFilter"/>
    
 	<!-- This filter redirects to the CAS Server to signal Single Logout should be performed -->
 	<bean id="requestSingleLogout" class="java.lang.String">

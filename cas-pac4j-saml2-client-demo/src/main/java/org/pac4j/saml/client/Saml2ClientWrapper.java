@@ -34,7 +34,7 @@ import org.pac4j.core.client.RedirectAction;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.RequiresHttpAction;
-import org.pac4j.saml.credentials.Saml2Credentials;
+import org.pac4j.saml.credentials.Saml2WrapperCredentials;
 import org.pac4j.saml.profile.Saml2Profile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ import org.springframework.security.saml.SAMLProcessingFilter;
 import org.w3c.dom.Element;
 
 
-public class Saml2ClientWrapper extends BaseClient<Saml2Credentials, Saml2Profile> {
+public class Saml2ClientWrapper extends BaseClient<Saml2WrapperCredentials, Saml2Profile> {
 
     protected static final Logger logger = LoggerFactory.getLogger(Saml2ClientWrapper.class);
 
@@ -113,7 +113,7 @@ public class Saml2ClientWrapper extends BaseClient<Saml2Credentials, Saml2Profil
 	
 
     @Override
-    protected Saml2Profile retrieveUserProfile(final Saml2Credentials credentials, final WebContext context) {
+    protected Saml2Profile retrieveUserProfile(final Saml2WrapperCredentials credentials, final WebContext context) {
 
     	String overwriteId = null;
    	
@@ -157,7 +157,7 @@ public class Saml2ClientWrapper extends BaseClient<Saml2Credentials, Saml2Profil
 
 	
     @Override
-    protected BaseClient<Saml2Credentials, Saml2Profile> newClient() {
+    protected BaseClient<Saml2WrapperCredentials, Saml2Profile> newClient() {
     	Saml2ClientWrapper client = new Saml2ClientWrapper();
          return client;
     }
@@ -255,7 +255,7 @@ public class Saml2ClientWrapper extends BaseClient<Saml2Credentials, Saml2Profil
     }
     
     
-    protected Saml2Credentials retrieveCredentials(final WebContext wc) throws RequiresHttpAction {
+    protected Saml2WrapperCredentials retrieveCredentials(final WebContext wc) throws RequiresHttpAction {
     	
       J2EContext jc = (J2EContext) wc;
    	  HttpServletRequest request = jc.getRequest();
@@ -270,8 +270,8 @@ public class Saml2ClientWrapper extends BaseClient<Saml2Credentials, Saml2Profil
         
       List<Attribute> attributes = sAMLCredential.getAttributes();
         
-       Saml2Credentials saml2Credentials = 
-      		new	Saml2Credentials(
+       Saml2WrapperCredentials saml2Credentials = 
+      		new	Saml2WrapperCredentials(
        				nameID,
       				attributes,
       				this.getClass().getSimpleName(),

@@ -85,7 +85,7 @@
         <servlet-name>saml</servlet-name>
         <url-pattern>/saml/web/*</url-pattern>
     </servlet-mapping> 
-  
+  <!-- for metadata generation -->
   
   
   <servlet-mapping>

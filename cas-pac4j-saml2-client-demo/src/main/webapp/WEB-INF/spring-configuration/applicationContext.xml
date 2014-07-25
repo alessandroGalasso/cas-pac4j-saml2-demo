@@ -35,51 +35,29 @@
     </description>
 
     <!-- #DEMO# -->
-   
-   <!-- 
+    <!-- 
     <bean id="facebook1" class="org.pac4j.oauth.client.FacebookClient">
         <property name="key" value="153186971478756" />
         <property name="secret" value="4e72f0233e6b4594e49ca5eaa59660a4" />
         <property name="scope" value="email,user_likes,user_about_me,user_birthday,user_education_history,user_hometown,user_relationship_details,user_location,user_religion_politics,user_relationships,user_work_history,user_website,user_photos,user_events,user_groups,user_actions.music" />
         <property name="fields" value="id,name,first_name,middle_name,last_name,gender,locale,languages,link,username,third_party_id,timezone,updated_time,verified,bio,birthday,education,email,hometown,interested_in,location,political,favorite_athletes,favorite_teams,quotes,relationship_status,religion,significant_other,website,work,friends,movies,music,books,likes,albums,events,groups,music.listens,picture" />        
     </bean>
-
     <bean id="twitter1" class="org.pac4j.oauth.client.TwitterClient">
         <property name="key" value="OPEWaSoTuAe49K4dSoRvNw" />
         <property name="secret" value="aKmvleltXAmLKcnlMgzRjTsCnhV3QVMVDh153xJttCo" />
     </bean>
-    
- 
     <bean id="caswrapper1" class="org.pac4j.oauth.client.CasOAuthWrapperClient">
         <property name="key" value="this_is_the_key" />
         <property name="secret" value="this_is_the_secret" />
         <property name="casOAuthUrl" value="http://localhost:8080/cas2/oauth2.0" />
     </bean>
-
-
--->
-
-  <!--   <bean id="cas1" class="org.pac4j.cas.client.CasClient">
+    <bean id="cas1" class="org.pac4j.cas.client.CasClient">
         <property name="casLoginUrl" value="http://localhost:8080/cas2/login" />-->
         <!-- property name="casProtocol">
             <util:constant static-field="org.pac4j.cas.client.CasClient.CasProtocol.SAML" />
         </property-->
-    <!-- </bean>-->
-
-
-    <!-- 
-    <bean id="saml1" class="org.pac4j.saml.client.Saml2Client">
-        <property name="keystorePath" value="resource:cassp.alessandro.it.keystore.jks" />
-        <property name="keystorePassword" value="cassp1" />
-        <property name="privateKeyPassword" value="cassp1" />
-        <property name="idpMetadataPath" value="resource:idp-metadata.xml" />
-    </bean>
-     -->
-     
-     <!-- DEMO -->
-     
-   
-     
+    <!-- </bean>
+    -->
     <bean id="cas1"
          class="org.pac4j.cas.client.CasClientWrapper">
         <property name="casEntryPointCas" ref="casEntryPointCas" />
@@ -87,7 +65,6 @@
         <!-- <property name="requestSingleLogoutFilterCas" ref="requestSingleLogoutFilterCas" /> -->
         <property name="singleLogoutFilterCas" ref="singleLogoutFilterCas" />
     </bean> 
-     
     <bean id="saml1"
           class="org.pac4j.saml.client.Saml2ClientWrapper">
         <property name="sAMLEntryPoint" ref="samlEntryPoint" />
@@ -96,22 +73,11 @@
         <property name="sAMLLogoutFilter" ref="samlLogoutFilter" />
         <property name="attributeOverwriteId" value="uid" />
     </bean>
-    <!-- DEMO -->
-    
-    
-
+   
     <bean id="clients" class="org.pac4j.core.client.Clients">
         <property name="callbackUrl" value="https://cas.alessandro.it:6443/caspac/login" />
         <property name="clients">
             <list>
-                
-                <!-- 
-                <ref bean="facebook1" />
-                <ref bean="twitter1" />
-                <ref bean="caswrapper1" />
-                <ref bean="cas1" />
-                 -->
-             
                 <ref bean="cas1" />
                 <ref bean="saml1" />
             </list>
@@ -119,6 +85,7 @@
     </bean>
     <!-- #DEMO# -->
 
+    
     <!--
       Including this aspectj-autoproxy element will cause spring to automatically
       create proxies around any beans defined in this file that match the pointcuts
