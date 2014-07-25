@@ -44,11 +44,10 @@ used libraries / projects:
 				cas-client-remotecas-webapp  	----------------------->		cas-server	----> xml
 			
 				cas-client-webapp  				----->		caspac		----->		cas-server	----> xml
-											----->		caspac		----->		idp  			----> ldap
+										----->		caspac		----->		idp  			----> ldap
 			
 				spring-security-saml2-sample	------------------------->		idp	 			----> ldap
 
--
 
 
 <h4>Quick start & test (Windows config)</h4>
