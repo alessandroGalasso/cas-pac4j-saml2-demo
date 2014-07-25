@@ -37,18 +37,21 @@ used libraries / projects:
 
 
 
-<h4Overview</h4>
+<h4>Overview:</h4>
 
-			cas-client-remotecas-webapp  	----------------------->		cas-server	----> xml
+-diagram
+	
+				cas-client-remotecas-webapp  	----------------------->		cas-server	----> xml
 			
-			cas-client-webapp  				----->		caspac		----->		cas-server	----> xml
+				cas-client-webapp  				----->		caspac		----->		cas-server	----> xml
 											----->		caspac		----->		idp  			----> ldap
 			
-			spring-security-saml2-sample	------------------------->		idp	 			----> ldap
-			
+				spring-security-saml2-sample	------------------------->		idp	 			----> ldap
+
+-
 
 
--<h4>Quick start & test (Windows config)</h4>
+<h4>Quick start & test (Windows config)</h4>
 
 - remap host: Windows\System32\drivers\etc
 
