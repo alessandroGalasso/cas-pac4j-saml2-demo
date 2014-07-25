@@ -107,16 +107,16 @@ used libraries / projects:
 - <h4>flows examples</h4>
 	
 	
-	- login:  	browser:			cas-client-webapp --->  caspac --->  idp (aleldap/aleldap)--->  caspac --->  cas-client-webapp
-	- logout: 	browser: 			cas-client-webapp --->  caspac --->  idp --->  caspac 
-	- back channel:		caspac --> 	cas-client-webapp
+		- login:  	browser:			cas-client-webapp --->  caspac --->  idp (aleldap/aleldap)--->  caspac --->  cas-client-webapp
+		- logout: 	browser: 			cas-client-webapp --->  caspac --->  idp --->  caspac 
+		- back channel:		caspac --> 	cas-client-webapp
 	
 				
-	- login:  	browser:			cas-client-remotecas-webapp --->  cas-server (alecas/alecas) --->  cas-client-remotecas-webapp		
-	- login:  	browser:			cas-client-webapp --->  caspac --->  cas-server  --->  caspac --->  cas-client-webapp
-	- logout: 	browser: 			cas-client-remotecas-webapp --->  cas-server
-	- back channel:		cas-server ---> cas-client-remotecas-webapp
-	- back channel:		cas-server ---> caspac ----> cas-client-webapp
+		- login:  	browser:			cas-client-remotecas-webapp --->  cas-server (alecas/alecas) --->  cas-client-remotecas-webapp		
+		- login:  	browser:			cas-client-webapp --->  caspac --->  cas-server  --->  caspac --->  cas-client-webapp
+		- logout: 	browser: 			cas-client-remotecas-webapp --->  cas-server
+		- back channel:		cas-server ---> cas-client-remotecas-webapp
+		- back channel:		cas-server ---> caspac ----> cas-client-webapp
 				 
 	
  
