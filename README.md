@@ -39,10 +39,10 @@ used libraries / projects:
 
 - remap host: Windows\System32\drivers\etc
 
-    127.0.0.1 idp.alessandro.it
-    127.0.0.1 cas.alessandro.it
-    127.0.0.1 cas2.alessandro.it
-    127.0.0.1 app.alessandro.it
+    	127.0.0.1 idp.alessandro.it
+    	127.0.0.1 cas.alessandro.it
+    	127.0.0.1 cas2.alessandro.it
+    	127.0.0.1 app.alessandro.it
     
 - download and install Tomcat
 
@@ -60,10 +60,10 @@ used libraries / projects:
 		
 - download and configure ldap
 
-	http://supergsego.com/apache//directory/apacheds/dist/2.0.0-M17/apacheds-2.0.0-M17.zip
-	 - start \apacheds-2.0.0-M17\bin\apacheds.bat    for   localhost:10389
-	 - add partition  id aleditta   suffix o=aleditta
-	 - ad idp user
+		http://supergsego.com/apache//directory/apacheds/dist/2.0.0-M17/apacheds-2.0.0-M17.zip
+	 	- start \apacheds-2.0.0-M17\bin\apacheds.bat    for   localhost:10389
+	 	- add partition  id aleditta   suffix o=aleditta
+	 	- ad idp user
 	 	- dn: cn=aleldap,ou=people,o=aleditta
 		- objectclass: top
 		- objectclass: inetOrgPerson
