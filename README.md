@@ -51,11 +51,12 @@ used libraries / projects:
 		
 - download and install Shibboleth
 
-		http://shibboleth.net/downloads/identity-provider/latest/shibboleth-identityprovider-2.4.0-bin.zip
-		shibboleth-identityprovider-2.4.0\install.bat --> installDirectory
-		eclipse import war idp.war
-		copy TOMCAT_HOME/endorsed and copy the .jar files included in the IdP source endorsed directory (not needed for http redirect post 
-		overwrite installDirectory\* with git shibbolethInstall\* and rewrite all absolute path with your absolute path
+		- http://shibboleth.net/downloads/identity-provider/latest/shibboleth-identityprovider-2.4.0-bin.zip
+		- shibboleth-identityprovider-2.4.0\install.bat --> installDirectory
+		- eclipse import war idp.war
+		- copy TOMCAT_HOME/endorsed and copy the .jar files included in the IdP source endorsed directory (not needed for http redirect post 
+		- overwrite installDirectory\* with git shibbolethInstall\* 
+		- rewrite all absolute path with your absolute path
 		
 - download and configure ldap
 
@@ -63,18 +64,18 @@ used libraries / projects:
 	 - start \apacheds-2.0.0-M17\bin\apacheds.bat    for   localhost:10389
 	 - add partition  id aleditta   suffix o=aleditta
 	 - ad idp user
-	 	dn: cn=aleldap,ou=people,o=aleditta
-		objectclass: top
-		objectclass: inetOrgPerson
-		objectclass: person
-		objectclass: organizationalPerson
-		cn: ale xxx
-		cn: aleldap
-		sn: xxx
-		description: xxxx
-		mail: xxx@neverland
-		uid: aleldap
-		userPassword:: e3NoYX0xdi9hRjhqQUE2SEwxQWNjakFDQ3NrTXNzYzA9	(aleldap)
+	 	- dn: cn=aleldap,ou=people,o=aleditta
+		- objectclass: top
+		- objectclass: inetOrgPerson
+		- objectclass: person
+		- objectclass: organizationalPerson
+		- cn: ale xxx
+		- cn: aleldap
+		- sn: xxx
+		- description: xxxx
+		- mail: xxx@neverland
+		- uid: aleldap
+		- userPassword:: e3NoYX0xdi9hRjhqQUE2SEwxQWNjakFDQ3NrTXNzYzA9	(aleldap)
 	 
 
 - eclipse config
@@ -83,42 +84,42 @@ used libraries / projects:
 			-Djavax.net.ssl.trustStore="C:\your_path\security\trustore\truststore.ts"
 			-Djavax.net.ssl.trustStorePassword="tru111"
 
-		tomcat 7 app.alessandro.it
-		tomcat 7 cas.alessandro.it
-		tomcat 7 cas2.alessandro.it
-		tomcat 6 idp.alessandro.it
+		- tomcat 7 app.alessandro.it
+		- tomcat 7 cas.alessandro.it
+		- tomcat 7 cas2.alessandro.it
+		- tomcat 6 idp.alessandro.it
 
 		map eclipse server.xml as in \Server\..\server.xml, replace abs path with yours
 
 
 - map webapps:
 			
-		cas client app of proxy cas: https://app.alessandro.it:2443/cas-client-webapp/
-		cas client app of remote cas: https://app.alessandro.it:2443/cas-client-remotecas-webapp/
-		saml client app of idp: https://app.alessandro.it:2443/spring-security-saml2-sample
-		cas proxy: https://cas.alessandro.it:6443/caspac/ 
-		cas remote: https://cas2.alessandro.it:7443/cas-server/ 
-		shibboleth idp: https://idp.alessandro.it/idp/ 
-		ldap: localhost:10389 
+		- cas client app of proxy cas: https://app.alessandro.it:2443/cas-client-webapp/
+		- cas client app of remote cas: https://app.alessandro.it:2443/cas-client-remotecas-webapp/
+		- saml client app of idp: https://app.alessandro.it:2443/spring-security-saml2-sample
+		- cas proxy: https://cas.alessandro.it:6443/caspac/ 
+		- cas remote: https://cas2.alessandro.it:7443/cas-server/ 
+		- shibboleth idp: https://idp.alessandro.it/idp/ 
+		- ldap: localhost:10389 
  
+  
  
- 
-- flows examples
+- <h4>flows examples</h4>
 	
-	1)	login:  	browser:			cas-client-webapp --->  caspac --->  idp (aleldap/aleldap)--->  caspac --->  cas-client-webapp
-		logout: 	browser: 			cas-client-webapp --->  caspac --->  idp --->  caspac 
-					back channel:		caspac --> 	cas-client-webapp
+	1)	- login:  	browser:			cas-client-webapp --->  caspac --->  idp (aleldap/aleldap)--->  caspac --->  cas-client-webapp
+		- logout: 	browser: 			cas-client-webapp --->  caspac --->  idp --->  caspac 
+					- back channel:		caspac --> 	cas-client-webapp
 				
-	2)	login:  	browser:			cas-client-remotecas-webapp --->  cas-server (alecas/alecas) --->  cas-client-remotecas-webapp		
-		login:  	browser:			cas-client-webapp --->  caspac --->  cas-server  --->  caspac --->  cas-client-webapp
-		logout: 	browser: 			cas-client-remotecas-webapp --->  cas-server
-				 	back channel:		cas-server ---> cas-client-remotecas-webapp
+	2)	- login:  	browser:			cas-client-remotecas-webapp --->  cas-server (alecas/alecas) --->  cas-client-remotecas-webapp		
+		- login:  	browser:			cas-client-webapp --->  caspac --->  cas-server  --->  caspac --->  cas-client-webapp
+		- logout: 	browser: 			cas-client-remotecas-webapp --->  cas-server
+				 	- back channel:		cas-server ---> cas-client-remotecas-webapp
 				 						cas-server ---> caspac ----> cas-client-webapp
 				 
 	
  
 
-SAML HTTP BROWSER FLOW EXAMPLE
+- <h4>SAML HTTP BROWSER FLOW EXAMPLE</h4>
 
 LOGIN
 
