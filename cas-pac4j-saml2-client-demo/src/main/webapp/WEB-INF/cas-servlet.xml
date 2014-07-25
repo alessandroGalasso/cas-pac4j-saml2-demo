@@ -41,11 +41,7 @@
     <constructor-arg index="1" ref="clients"/>
     
   </bean>
-  <!-- #DEMO# -->
-  
-  
-    <!-- #DEMO# -->
-	  <bean id="clientLogoutAction" class="org.jasig.cas.support.pac4j.web.flow.ClientLogoutAction">
+  <bean id="clientLogoutAction" class="org.jasig.cas.support.pac4j.web.flow.ClientLogoutAction">
     	<constructor-arg index="0" ref="centralAuthenticationService"/>
     	<constructor-arg index="1" ref="clients"/>
     	<constructor-arg index="2" ref="ticketGrantingTicketCookieGenerator"/>
@@ -53,11 +49,8 @@
     	<constructor-arg index="4" ref="ticketRegistry"/>
     	<constructor-arg index="5"><null /></constructor-arg>
     	<constructor-arg index="6" ref="servicesManager"/>
-  	</bean>
- 	<!-- #DEMO# -->     
-  
-  <!-- #DEMO# -->
-  <bean id="clientSloAction" class="org.jasig.cas.support.pac4j.web.flow.ClientSloAction">
+  </bean>
+  <bean id="clientBackChannelAction" class="org.jasig.cas.support.pac4j.web.flow.ClientBackChannelAction">
     	<constructor-arg index="0" ref="centralAuthenticationService"/>
     	<constructor-arg index="1" ref="clients"/>
     	<constructor-arg index="2" ref="ticketGrantingTicketCookieGenerator"/>

@@ -71,8 +71,6 @@ Client<C, U>, Cloneable {
 
     protected String callbackUrl;
     
-    protected String logoutCallbackUrl;
-
     private String name;
 
     private boolean enableContextualRedirects = false;
@@ -106,13 +104,7 @@ Client<C, U>, Cloneable {
     
     
 
-    public String getLogoutCallbackUrl() {
-		return logoutCallbackUrl;
-	}
 
-	public void setLogoutCallbackUrl(String logoutCallbackUrl) {
-		this.logoutCallbackUrl = logoutCallbackUrl;
-	}
 
 	public String getCallbackUrl() {
         return this.callbackUrl;

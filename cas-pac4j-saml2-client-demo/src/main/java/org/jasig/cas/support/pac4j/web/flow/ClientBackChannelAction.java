@@ -73,15 +73,22 @@ import org.springframework.webflow.context.ExternalContextHolder;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 import org.w3c.dom.Element;
+ 
 
 
+/*
+ * 
+ * intercept remote identity provider call to Back Channel and propagate 
+ * via Back Channel to registered webapps
+ * and stop the login / logout flow
+ */
 @SuppressWarnings({ "unchecked" })
-public final class ClientSloAction extends AbstractAction {
+public final class ClientBackChannelAction extends AbstractAction {
 
     /**
      * The logger.
      */
-    private final Logger logger = LoggerFactory.getLogger(ClientSloAction.class);
+    private final Logger logger = LoggerFactory.getLogger(ClientBackChannelAction.class);
     
     
     
@@ -121,7 +128,7 @@ public final class ClientSloAction extends AbstractAction {
     private final CentralAuthenticationService centralAuthenticationService;
 
 
-    public ClientSloAction(
+    public ClientBackChannelAction(
     		final CentralAuthenticationService theCentralAuthenticationService,
             final Clients theClients,
             final CookieRetrievingCookieGenerator tgtCookieGenerator,
@@ -159,18 +166,7 @@ public final class ClientSloAction extends AbstractAction {
 	    final HttpServletResponse response = WebUtils.getHttpServletResponse(context);
 	    final WebContext webContext = new J2EContext(request, response);
 	    
-	    logger.debug("=========================================================" );
-	    logger.debug("ClientSloAction.doExecute: " );
-        logger.debug("request.method: " +request.getMethod() );
-        logger.debug("request.requestURI: " +request.getRequestURI() );
-        logger.debug("request.queryString: " +request.getQueryString() );
-        logger.debug("request. host port remoteaddress: " +request.getRemoteHost() +" " +request.getRemotePort()+" "+request.getRemoteAddr() );
-	    	Enumeration enParams = request.getParameterNames(); 
-        	while(enParams.hasMoreElements()){
-        		String paramName = (String)enParams.nextElement();
-        		logger.debug(paramName+": "+request.getParameter(paramName));
-        	}
-        logger.debug("=========================================================" );
+	    log(request);
 	    
         
 	    String clientName = request.getParameter("client_name");
@@ -192,7 +188,7 @@ public final class ClientSloAction extends AbstractAction {
             	
             	CasClientWrapper clientWrapper = (CasClientWrapper) client;
             	         
-            	// if is a cas logout post request from server
+            	//remote cas ClientBackChannelAction
             	if(isLogoutRequest(request)){
             		
             		final String logoutMessage = CommonUtils.safeGetParameter(request, this.logoutParameterName);
@@ -228,7 +224,8 @@ public final class ClientSloAction extends AbstractAction {
             			    		
             			    	   					//get external auth
             			    	   					org.springframework.security.core.Authentication externalAuth = null;
-            			    			    		Principal principal = authentication.getPrincipal();
+            			    			    		/*
+            			    	   					Principal principal = authentication.getPrincipal();
             		                                Map<String,Object> principalAttributes = principal.getAttributes();
             		                                for (Map.Entry<String,Object> entry : principalAttributes.entrySet()) {
             		                                	if("externalAuthentication".equals(entry.getKey())){
@@ -236,6 +233,9 @@ public final class ClientSloAction extends AbstractAction {
             		                                	}
             		                     
             		                                }  
+            		                                */
+            		                                
+            		                                externalAuth = (org.springframework.security.core.Authentication) ClientLogoutAction.getExtAuthentication(authentication);
             			    		
             		              	
             		                                if(externalAuth!=null){
@@ -248,6 +248,7 @@ public final class ClientSloAction extends AbstractAction {
             	                    		
             		                                			logger.debug("token confirmed for tgtId: "+tgtId);
             		                   
+            		                                			    //should do some LT validation from remote server ?
             		                                				//destroy the TGT and all his ST  !!! NOT WORKING
             		                                				List<LogoutRequest> logoutRequests = 
             		                                						this.centralAuthenticationService.destroyTicketGrantingTicket(tgtId);
@@ -291,6 +292,36 @@ public final class ClientSloAction extends AbstractAction {
 	    return success();
     }
         	
+    
+    
+    
+    
+    
+    private void log(HttpServletRequest request){
+    	
+    	   logger.debug("=========================================================" );
+    	   logger.debug("ClientBackChannelAction.doExecute: " );
+           logger.debug("request.method: " +request.getMethod() );
+           logger.debug("request.requestURI: " +request.getRequestURI() );
+           logger.debug("request.queryString: " +request.getQueryString() );
+           logger.debug("request. host port remoteaddress: " +request.getRemoteHost() +" " +request.getRemotePort()+" "+request.getRemoteAddr() );
+           logger.debug("request. parameter:" );
+      	   Enumeration enParams = request.getParameterNames(); 
+           	while(enParams.hasMoreElements()){
+           		String paramName = (String)enParams.nextElement();
+           		logger.debug(paramName+": "+request.getParameter(paramName));
+           	}
+           	
+           	logger.debug("request. attribute:" );
+           	Enumeration enParams2 = request.getAttributeNames(); 
+           	while(enParams2.hasMoreElements()){
+           		String paramName2 = (String)enParams2.nextElement();
+           		logger.debug(paramName2+": "+request.getAttribute(paramName2));
+           	}
+            logger.debug("=========================================================" );
+    }
+    
+    
     
     
     /** The redirect to app event in webflow. */

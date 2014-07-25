@@ -231,7 +231,7 @@ public class Saml2ClientWrapper extends BaseClient<Saml2Credentials, Saml2Profil
     
     
     
-    public String logout(final WebContext wc,org.springframework.security.core.Authentication authenticationsaml
+    public String browserLogoutRedirectToIdp(final WebContext wc,org.springframework.security.core.Authentication authenticationsaml
     		) {
 
       J2EContext jc = (J2EContext) wc;

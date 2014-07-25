@@ -30,8 +30,8 @@
     </on-start>
 
     <!-- #DEMO# -->
-    <action-state id="clientSloAction">
-        <evaluate expression="clientSloAction" />
+    <action-state id="clientBackChannelAction">
+        <evaluate expression="clientBackChannelAction" />
         <transition on="success" to="clientAction" />
         <transition on="stop" to="dummyView" />
     </action-state>
