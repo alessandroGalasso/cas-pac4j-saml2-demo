@@ -34,14 +34,12 @@ used libraries / projects:
 - saml idp process back channel call
 - back channel to proxy authenticated apps (seems that  destroing TGT on CAS 4.0.1-SNAPSHOT isnt sending a proper logoutRequest parameter to webapps) so a remote server logout destroy de proxy server tgt but apps are still logged in
 
-
-
-<h4Overview</h4>
+-<h4Overview</h4>
 
 		cas-client-remotecas-webapp  	----------------------->		cas-server	----> xml
 		
 		cas-client-webapp  				----->		caspac		----->		cas-server	----> xml
-											----->		caspac		----->		idp  			----> ldap
+										----->		caspac		----->		idp  			----> ldap
 		
 		spring-security-saml2-sample	------------------------->		idp	 			----> ldap
 		
