@@ -109,34 +109,9 @@ public class CasClientWrapper extends BaseClient<CasWrapperCredentials, CasProfi
     @Override
     protected CasProfile retrieveUserProfile(final CasWrapperCredentials credentials, final WebContext context) {
 
-        final String ticket = credentials.getServiceTicket();
-        
-      
-    	
-    	
-        J2EContext jc = (J2EContext) context;
-     	HttpServletRequest request = jc.getRequest();
-        HttpServletResponse response = jc.getResponse();
-      	
-        org.springframework.security.core.Authentication authentication = null;
-    	// 2 times==error 
-        //authentication = casFilterCas.attemptAuthentication(request, response);
-        authentication = credentials.getExternalAuthentication();
-        
-        
         CasProfile casProfile = new CasProfile();
         casProfile.addAttribute("externalAuthentication",credentials.getExternalAuthentication());
-        
-        
-        
-      	casProfile.setId(credentials.getServiceTicket());
-      	System.out.println("--------> credentials.getServiceTicket() : "+credentials.getServiceTicket());
-     	
-      	
-        Object principal = authentication.getPrincipal();
-        System.out.println("-------->oppure  retrieveUserProfile :Object principal getClass: "+principal.getClass());
-        System.out.println("--------> retrieveUserProfile :Object principal: "+principal);
-        //casProfile.setId(principal);
+        casProfile.setId(credentials.getServiceTicket());
          
         return casProfile;
     }
@@ -182,41 +157,10 @@ public class CasClientWrapper extends BaseClient<CasWrapperCredentials, CasProfi
     
      
     public boolean browserLogoutRedirectToIdp(final WebContext wc,org.springframework.security.core.Authentication authentication) {
-
-      J2EContext jc = (J2EContext) wc;
-   	  HttpServletRequest request = jc.getRequest();
-      HttpServletResponse response = jc.getResponse();
-      
-      boolean dologout = false;
-     	  
-     // try {
-		
-    	  logger.debug("pac4j CasClientWrapper call requestSingleLogoutFilterCas.processLogoutPac4j");
-    	  
-    	  dologout = true;
-    	  //dologout = requestSingleLogoutFilterCas.browserLogoutRedirectToIdp(request, response,authentication);
-
-       // } catch (IOException e) {
-		//	// TODO Auto-generated catch block
-		//	e.printStackTrace();
-		//} catch (ServletException e) {
-		//	// TODO Auto-generated catch block
-		//	e.printStackTrace();
-		//}
-    	  
-        return dologout;
+    	return true;
     }
     
-    
-    
-    public boolean processLogoutRequesAndResponse(final WebContext wc,org.springframework.security.core.Authentication authentication
-    		) {
-    	
-      logger.debug("cas do nothing, logout from server remote post");
-   	  
-   	  return true;
-    	
-    }
+
     
      
     protected CasWrapperCredentials retrieveCredentials(final WebContext wc) throws RequiresHttpAction {
@@ -239,13 +183,12 @@ public class CasClientWrapper extends BaseClient<CasWrapperCredentials, CasProfi
 		e.printStackTrace();
 	}
       
-     
-    org.springframework.security.core.userdetails.User principalImpl = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+      org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
     
    
       CasWrapperCredentials casCredentials = 
     		  new CasWrapperCredentials(
-    				  principalImpl.getUsername(),
+    				  user.getUsername(),
     				  this.getClass().getSimpleName(),
     				  authentication
     				  );

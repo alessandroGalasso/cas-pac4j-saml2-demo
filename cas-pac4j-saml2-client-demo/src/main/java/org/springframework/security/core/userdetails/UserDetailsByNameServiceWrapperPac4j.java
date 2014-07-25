@@ -19,13 +19,13 @@ import org.springframework.util.Assert;
  * @author Scott Battaglia
  * @since 2.0
  */
-public class UserDetailsByNameServiceWrapper<T extends Authentication> implements AuthenticationUserDetailsService<T>, InitializingBean {
+public class UserDetailsByNameServiceWrapperPac4j<T extends Authentication> implements AuthenticationUserDetailsService<T>, InitializingBean {
     private UserDetailsService userDetailsService = null;
 
     /**
      * Constructs an empty wrapper for compatibility with Spring Security 2.0.x's method of using a setter.
      */
-    public UserDetailsByNameServiceWrapper() {
+    public UserDetailsByNameServiceWrapperPac4j() {
         // constructor for backwards compatibility with 2.0
     }
 
@@ -35,7 +35,7 @@ public class UserDetailsByNameServiceWrapper<T extends Authentication> implement
      *
      * @param userDetailsService the UserDetailsService to delegate to.
      */
-    public UserDetailsByNameServiceWrapper(final UserDetailsService userDetailsService) {
+    public UserDetailsByNameServiceWrapperPac4j(final UserDetailsService userDetailsService) {
         //Assert.notNull(userDetailsService, "userDetailsService cannot be null.");
         this.userDetailsService = userDetailsService;
     }

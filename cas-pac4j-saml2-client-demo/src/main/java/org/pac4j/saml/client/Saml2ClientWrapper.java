@@ -164,8 +164,6 @@ public class Saml2ClientWrapper extends BaseClient<Saml2WrapperCredentials, Saml
 
     @Override
     protected boolean isDirectRedirection() {
-        
-    	//true to go directly to idp
     	return false;
     }
 
@@ -211,7 +209,6 @@ public class Saml2ClientWrapper extends BaseClient<Saml2WrapperCredentials, Saml
      	  
       try {
 		
-    	  //to do :  Process request and send response to the sender in case the request is valid
     	  dologout = sAMLLogoutProcessingFilter.processLogoutPac4j(request, response,authenticationsaml);
 		
        } catch (IOException e) {

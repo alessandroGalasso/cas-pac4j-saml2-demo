@@ -49,7 +49,7 @@
   </bean>
   
      <bean id = "casauthenticationUserDetailsService"
-            class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
+            class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapperPac4j">
 	</bean>
   
 	<bean id="singleLogoutFilterCas" class="org.jasig.cas.client.session.SingleSignOutFilter"/>

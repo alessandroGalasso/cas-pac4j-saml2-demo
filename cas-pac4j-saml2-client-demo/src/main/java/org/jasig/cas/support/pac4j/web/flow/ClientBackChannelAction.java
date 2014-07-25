@@ -77,10 +77,7 @@ import org.w3c.dom.Element;
 
 
 /*
- * 
- * intercept remote identity provider call to Back Channel and propagate 
- * via Back Channel to registered webapps
- * and stop the login / logout flow
+ * intercept remote identity provider call to Back Channel and send  via Back Channel to registered webapps
  */
 @SuppressWarnings({ "unchecked" })
 public final class ClientBackChannelAction extends AbstractAction {
@@ -157,7 +154,6 @@ public final class ClientBackChannelAction extends AbstractAction {
      * logout POST from remote server   (server-->server)
      * CAS: post logout from server is mapped to /login?clientname= (here)
      * SAML: post logout from server is mapped to /logout?action=SingleLogout (logout webflow)
-     * error: logout on remote cas --> post here back channel logout --> doesnt back channel logout on webapp
      */
     @Override
     protected Event doExecute(final RequestContext context) throws Exception {
@@ -224,22 +220,10 @@ public final class ClientBackChannelAction extends AbstractAction {
             			    		
             			    	   					//get external auth
             			    	   					org.springframework.security.core.Authentication externalAuth = null;
-            			    			    		/*
-            			    	   					Principal principal = authentication.getPrincipal();
-            		                                Map<String,Object> principalAttributes = principal.getAttributes();
-            		                                for (Map.Entry<String,Object> entry : principalAttributes.entrySet()) {
-            		                                	if("externalAuthentication".equals(entry.getKey())){
-            		                                		externalAuth = (org.springframework.security.core.Authentication) entry.getValue();
-            		                                	}
-            		                     
-            		                                }  
-            		                                */
-            		                                
+            			    	                      
             		                                externalAuth = (org.springframework.security.core.Authentication) ClientLogoutAction.getExtAuthentication(authentication);
-            			    		
-            		              	
+            			          	
             		                                if(externalAuth!=null){
-            		                	 
             		                	 
             		                                	String extCredentials = (String) externalAuth.getCredentials();
             		                               
@@ -253,7 +237,6 @@ public final class ClientBackChannelAction extends AbstractAction {
             		                                				List<LogoutRequest> logoutRequests = 
             		                                						this.centralAuthenticationService.destroyTicketGrantingTicket(tgtId);
             		                                				
-            		                                				 
             		                                						//reply
             		                                						logger.debug("... stop flow and respond to remote server");
                   	                              		                    webContext.setResponseStatus(HttpConstants.OK);
