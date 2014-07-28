@@ -66,6 +66,8 @@
                    -->
                 <entry key-ref="proxyAuthenticationHandler" value-ref="proxyPrincipalResolver" />
                 <entry key-ref="primaryAuthenticationHandler"><null /></entry>
+                <entry key-ref="localAuthenticationHandler" value-ref="localPrincipalResolver" />
+
             </map>
         </constructor-arg>
 
@@ -88,6 +90,41 @@
             <bean class="org.jasig.cas.authentication.AnyAuthenticationPolicy" />
         </property>
     </bean>
+    
+    
+    
+    
+    
+    <bean id="localAuthenticationHandler"
+          class="org.jasig.cas.authentication.AcceptUsersAuthenticationHandler">
+        <property name="users">
+            <map>
+                <entry key="alelocal" value="alelocal"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="localPrincipalResolver"
+          class="org.jasig.cas.authentication.principal.PersonDirectoryPrincipalResolver" >
+        <property name="attributeRepository" ref="localAttributeRepository" />
+    </bean>
+    <bean id="localAttributeRepository" class="org.jasig.services.persondir.support.StubPersonAttributeDao"
+            p:backingMap-ref="localAttrRepoBackingMap" />
+    <util:map id="localAttrRepoBackingMap">
+        <entry key="uid" value="uid" />
+        <entry key="eduPersonAffiliation" value="eduPersonAffiliation" /> 
+        <entry key="groupMembership" value="groupMembership" />
+    </util:map>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     <!-- Required for proxy ticket mechanism. -->
     <bean id="proxyAuthenticationHandler"

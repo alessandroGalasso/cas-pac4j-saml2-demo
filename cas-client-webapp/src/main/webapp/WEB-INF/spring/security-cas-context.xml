@@ -89,6 +89,7 @@ entry-point-ref="casEntryPoint">
 		<security:user name="ale"  authorities="S" /> 
 		<security:user name="aleldap"  authorities="S,ldapuser" /> 
 		<security:user name="alecas"  authorities="S,casuser" /> 
+		<security:user name="alelocal"  authorities="S,localcasuser" /> 
 	</security:user-service> 
 
 

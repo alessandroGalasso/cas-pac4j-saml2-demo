@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jasig.cas.client.authentication.AttributePrincipalImpl;
+import org.jasig.cas.client.util.CommonUtils;
+import org.jasig.cas.client.util.XmlUtils;
 import org.jasig.cas.client.validation.Assertion;
 import org.jasig.cas.client.validation.TicketValidationException;
 import org.opensaml.saml2.core.Attribute;
@@ -41,7 +43,6 @@ import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.RequiresHttpAction;
 import org.pac4j.core.exception.TechnicalException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
@@ -50,6 +51,7 @@ import org.springframework.security.saml.SAMLEntryPoint;
 import org.springframework.security.saml.SAMLLogoutFilter;
 import org.springframework.security.saml.SAMLLogoutProcessingFilter;
 import org.springframework.security.saml.SAMLProcessingFilter;
+import org.springframework.webflow.execution.RequestContext;
 import org.w3c.dom.Element;
 
 
@@ -204,6 +206,40 @@ public class CasClientWrapper extends BaseClient<CasWrapperCredentials, CasProfi
     public Protocol getProtocol() {
         return Protocol.CAS;
     }
+    
+    
+    
+    
+    /** Parameter name that stores logout request */
+    private static String logoutParameterName = "logoutRequest";
+    
+    
+    
+    public static boolean isLogoutRequest(final HttpServletRequest request) {
+        return "POST".equals(request.getMethod()) && !isMultipartRequest(request) &&
+            CommonUtils.isNotBlank(CommonUtils.safeGetParameter(request, logoutParameterName));
+    }
+
+    private static boolean isMultipartRequest(final HttpServletRequest request) {
+        return request.getContentType() != null && request.getContentType().toLowerCase().startsWith("multipart");
+    }    
+    
+    public static String getST(final HttpServletRequest request) {
+    	String logoutMessage = CommonUtils.safeGetParameter(request, logoutParameterName);
+    	String token = XmlUtils.getTextForElement(logoutMessage, "SessionIndex");
+    	return token;
+    }    
+    
+    
+	
+    
+    
+    
+    
+    
+    
+    
+    
     
     
 

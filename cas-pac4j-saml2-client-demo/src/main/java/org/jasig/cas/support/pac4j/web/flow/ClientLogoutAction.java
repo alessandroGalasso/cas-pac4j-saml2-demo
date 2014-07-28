@@ -25,7 +25,12 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang.StringUtils;
 import org.jasig.cas.CentralAuthenticationService;
 import org.jasig.cas.authentication.Authentication;
+import org.jasig.cas.authentication.BasicCredentialMetaData;
+import org.jasig.cas.authentication.CredentialMetaData;
+import org.jasig.cas.authentication.HandlerResult;
+import org.jasig.cas.authentication.ImmutableAuthentication;
 import org.jasig.cas.authentication.principal.Principal;
+import org.jasig.cas.authentication.principal.SimplePrincipal;
 import org.jasig.cas.services.ServicesManager;
 import org.jasig.cas.ticket.TicketGrantingTicket;
 import org.jasig.cas.ticket.registry.TicketRegistry;
@@ -48,6 +53,7 @@ import org.pac4j.saml.client.Saml2Client;
 import org.pac4j.saml.client.Saml2ClientWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.cas.authentication.CasAuthenticationToken;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.context.ExternalContext;
@@ -164,10 +170,12 @@ public final class ClientLogoutAction extends AbstractAction {
         	return success();
         }else{
         	
+        	 logAuthentication(authentication);
+        	
         	 Object client = null;
         	
         	 // get pac4j client name
-             String clientName = authentication.getAttributes().get("clientName").toString();
+             String clientName = (String)authentication.getAttributes().get("clientName");
              
              logger.debug("TGT("+tgtId+"), pac4j client: "+ clientName );
         	
@@ -295,11 +303,60 @@ public final class ClientLogoutAction extends AbstractAction {
     }
     
     
+    
+    
+    
+    private void logAuthentication(Authentication authentication){
+    	
+         org.jasig.cas.authentication.principal.SimplePrincipal principal = (SimplePrincipal) authentication.getPrincipal();
+    		
+    	 Map<String, Object> attributes = authentication.getAttributes();
+    	 
+    	 Map<String, Object> pattributes = principal.getAttributes();
+    	 
+    	 for (Map.Entry<String, Object> entry : pattributes.entrySet()) {
+      	    String key = entry.getKey();
+      	    Object value = entry.getValue();
+      	    System.out.println("p attributes"+ key+" a value "+value.getClass());  //CasAuthenticationToken
+      	 }
+    		
+    	 logger.debug("==========================================");
+    	 logger.debug("ClientLogoutAction CAS Authentication: ");
+    	 logger.debug("principal.getId(): "+principal.getId());
+
+    	 for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+      	    String key = entry.getKey();
+      	    Object value = entry.getValue();
+      	  logger.debug("authentication.attributes key: "+ key+" value: "+value);  
+      	 }
+    	 
+    	 for (Map.Entry<String, Object> entry : pattributes.entrySet()) {
+       	    String key = entry.getKey();
+       	    Object value = entry.getValue();
+       	    logger.debug("principal.attributes key: "+ key);  
+       	    
+       	    if(value instanceof CasAuthenticationToken){
+       	    	CasAuthenticationToken casAuthenticationToken = (CasAuthenticationToken) value;
+       	    	logger.debug("principal.casAuthenticationToken.getName: "+ casAuthenticationToken.getName());  
+       	    	logger.debug("principal.casAuthenticationToken.getName: "+ casAuthenticationToken.getCredentials().getClass());  
+       	    	
+       	    }
+       	 }
+    	 logger.debug("==========================================");
+    	
+    }
+    	   
+
+    
+    
+    
+    
+    
     private void logExtAuthentication(Object client, Object externalAuth,String action,String clientName,String tgtId){
     	
     	
     	logger.debug("==========================================");
-    	logger.debug("ClientLogoutAction:");
+    	logger.debug("ClientLogoutAction ExtAuthentication:");
     	logger.debug("TGT("+tgtId+") action : "+action);
  	    logger.debug("TGT("+tgtId+") clientName : "+clientName);  
  	   
@@ -350,6 +407,20 @@ public final class ClientLogoutAction extends AbstractAction {
         
     }
      	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     
     static public Object getExtAuthentication(Authentication authentication){

@@ -185,18 +185,18 @@ public final class ClientBackChannelAction extends AbstractAction {
             	CasClientWrapper clientWrapper = (CasClientWrapper) client;
             	         
             	//remote cas ClientBackChannelAction
-            	if(isLogoutRequest(request)){
+            	if(CasClientWrapper.isLogoutRequest(request)){
             		
-            		final String logoutMessage = CommonUtils.safeGetParameter(request, this.logoutParameterName);
-            	       
-            		final String token = XmlUtils.getTextForElement(logoutMessage, "SessionIndex");
-                  
+            		final String token = CasClientWrapper.getST(request);
+            		
             		logger.debug("destroy TGT with an external ST: "+token);  
             		
             		if (CommonUtils.isNotBlank(token)) {
                         
             			Collection<Ticket> ticketCollection = this.ticketRegistry.getTickets();
             			logger.debug("CAS ticketCollection.size: "+ticketCollection.size());
+            			
+            			
             			 
             			    for (Ticket ticket : ticketCollection) {
             			    	
@@ -310,46 +310,14 @@ public final class ClientBackChannelAction extends AbstractAction {
     /** The redirect to app event in webflow. */
     public static final String REDIRECT_APP_EVENT = "redirectApp";
     
-    
-    /** A constant for the logout index in web flow. */
-    public static final String LOGOUT_INDEX = "logoutIndex";
-    
-    
-    /** Parameter name that stores logout request */
-    private String logoutParameterName = "logoutRequest";
-    
-    public boolean isLogoutRequest(final HttpServletRequest request) {
-        return "POST".equals(request.getMethod()) && !isMultipartRequest(request) &&
-            CommonUtils.isNotBlank(CommonUtils.safeGetParameter(request, this.logoutParameterName));
-    }
-    
-    
-    private boolean isMultipartRequest(final HttpServletRequest request) {
-        return request.getContentType() != null && request.getContentType().toLowerCase().startsWith("multipart");
-    }    
-    
-    
-    
-    /**
-     * Put logout index into flow scope.
-     *
-     * @param context the context
-     * @param index the index
-     */
-    protected final void putLogoutIndex(final RequestContext context, final int index) {
-        context.getFlowScope().put(LOGOUT_INDEX, index);
-    }
 
-    /**
-     * Gets the logout index from the flow scope.
-     *
-     * @param context the context
-     * @return the logout index
-     */
-    protected final int getLogoutIndex(final RequestContext context) {
-        final Object value = context.getFlowScope().get(LOGOUT_INDEX);
-        return value == null ? 0 : (Integer) value;
-    }
+   
+    
+    
+    
+    
+    
+
     
     
    
