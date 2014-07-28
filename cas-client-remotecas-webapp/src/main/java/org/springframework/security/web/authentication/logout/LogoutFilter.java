@@ -15,7 +15,6 @@
 
 package org.springframework.security.web.authentication.logout;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -89,9 +88,9 @@ public class LogoutFilter extends GenericFilterBean {
         HttpServletResponse response = (HttpServletResponse) res;
         
         
-        System.out.println("\n\n proxy=========================================================" );
+        System.out.println("\n\n=========================================================" );
         
-        
+        /*
         
         System.out.println("cas-client-webapp LogoutFilter requestSingleLogoutFilter " );
         System.out.println("request.method: " +request.getMethod() );
@@ -101,35 +100,12 @@ public class LogoutFilter extends GenericFilterBean {
         	Enumeration enParams = request.getParameterNames(); 
         	while(enParams.hasMoreElements()){
         		String paramName = (String)enParams.nextElement();
-        		System.out.println("1) "+paramName+": "+request.getParameter(paramName));
+        		System.out.println(paramName+": "+request.getParameter(paramName));
         	}
+        */
         	
-  /*
-           	Enumeration enParams2 = request.getAttributeNames(); 
-           	while(enParams2.hasMoreElements()){
-           		String paramName2 = (String)enParams2.nextElement();
-           		logger.debug("2) "+paramName2+": "+request.getAttribute(paramName2));
-           	}
-        	*/
-        
-       /*
-        try {
-            BufferedReader reader = req.getReader();
-            reader.mark(10000);
-
-            String line;
-            do {
-                line = reader.readLine();
-                System.out.println(line);
-            } while (line != null);
-            reader.reset();
-            // do NOT close the reader here, or you won't be able to get the post data twice
-        } catch(IOException e) {
-            logger.warn("getPostData couldn't.. get the post data", e);  // This has happened if the request's reader is closed    
-        }
         	
-        	*/
-        System.out.println("=========================================================\n\n" );
+        	System.out.println("=========================================================\n\n" );
       
         
         
