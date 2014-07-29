@@ -67,7 +67,9 @@ public class CasClientWrapper extends BaseClient<CasWrapperCredentials, CasProfi
     
     private org.springframework.security.web.authentication.logout.LogoutFilter requestSingleLogoutFilterCas;
     
-  
+    private boolean directRedirection = false;
+    
+    
 	public org.springframework.security.cas.web.CasAuthenticationEntryPoint getCasEntryPointCas() {
 		return casEntryPointCas;
 	}
@@ -128,11 +130,14 @@ public class CasClientWrapper extends BaseClient<CasWrapperCredentials, CasProfi
     @Override
     protected boolean isDirectRedirection() {
     	//true to go directly to idp
-    	return false;
+    	return directRedirection;
     }
 
-    
-    @Override
+    public void setDirectRedirection(boolean directRedirection) {
+		this.directRedirection = directRedirection;
+	}
+
+	@Override
     protected RedirectAction retrieveRedirectAction(final WebContext wc) {
 	   
 	   try {

@@ -58,12 +58,15 @@
         </property-->
     <!-- </bean>
     -->
+    
+    <!-- directRedirection must be true only for 1 client -->
     <bean id="cas1"
          class="org.pac4j.cas.client.CasClientWrapper">
         <property name="casEntryPointCas" ref="casEntryPointCas" />
         <property name="casFilterCas" ref="casFilterCas" />
         <!-- <property name="requestSingleLogoutFilterCas" ref="requestSingleLogoutFilterCas" /> -->
         <property name="singleLogoutFilterCas" ref="singleLogoutFilterCas" />
+        <property name="directRedirection" value="true" />
     </bean> 
     <bean id="saml1"
           class="org.pac4j.saml.client.Saml2ClientWrapper">
@@ -72,6 +75,7 @@
         <property name="sAMLLogoutProcessingFilter" ref="samlLogoutProcessingFilter" />
         <property name="sAMLLogoutFilter" ref="samlLogoutFilter" />
         <property name="attributeOverwriteId" value="uid" />
+        <property name="directRedirection" value="false" />
     </bean>
    
     <bean id="clients" class="org.pac4j.core.client.Clients">

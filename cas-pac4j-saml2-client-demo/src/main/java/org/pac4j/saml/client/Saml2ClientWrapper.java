@@ -61,6 +61,8 @@ public class Saml2ClientWrapper extends BaseClient<Saml2WrapperCredentials, Saml
     
     private String attributeOverwriteId = null;
 	
+    private boolean directRedirection = false;
+    
   
 	public String getAttributeOverwriteId() {
 		return attributeOverwriteId;
@@ -164,8 +166,16 @@ public class Saml2ClientWrapper extends BaseClient<Saml2WrapperCredentials, Saml
 
     @Override
     protected boolean isDirectRedirection() {
-    	return false;
+    	//true to go directly to idp
+    	return directRedirection;
     }
+
+    public void setDirectRedirection(boolean directRedirection) {
+		this.directRedirection = directRedirection;
+	}
+    
+    
+    
 
     
     @Override
